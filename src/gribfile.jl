@@ -1,0 +1,175 @@
+# Structs and functions related to the C file pointer type as used in eccodes
+
+export GribFile, destroy
+
+mutable struct File
+end
+
+"""
+Represents a grib file. Implements many of the Julia I/O functions.
+"""
+mutable struct GribFile
+    ptr::Ptr{File}
+    filename::String
+    mode::String
+    pos::Int
+    nmessages::Int32
+end
+
+"""
+    `GribFile(filename::AbstractString, mode="r")`
+Open a grib file. `mode` is a mode as described by `Base.open`.
+"""
+function GribFile(filename::AbstractString; mode="r")
+    if !isfile(filename)
+        throw(SystemError("opening file $filename: no such file"))
+    end
+    f = ccall(:fopen, Ptr{File}, (Cstring, Cstring), filename, mode)
+
+    nref = Ref(Int32(0))
+    err = ccall((:codes_count_in_file, eccodes), Cint, (Ptr{codes_index}, Ptr{File}, Ref{Cint}),
+                C_NULL, f, nref)
+    errorcheck(err)
+
+    return GribFile(f, filename, mode, 0, nref[])
+end
+
+"""
+    `GribFile(f::Function, filename::AbstractString, mode="r")`
+Open a grib file and automatically close after exucuting `f`.
+`mode` is a mode as described by `Base.open`.
+
+# Example
+```julia
+GribFile(filename) do f
+    # do things in read mode
+end
+```
+"""
+function GribFile(f::Function, filename::AbstractString; mode="r")
+    file = GribFile(filename, mode=mode)
+    try
+        f(file)
+    finally
+        destroy(file)
+    end
+end
+
+"""
+    `length(f::GribFile)`
+
+Return the number of messages in `f`
+"""
+Base.length(f::GribFile) = f.nmessages
+
+function Base.iterate(f::GribFile, state=())
+    next = Message(f)
+    if next == nothing
+        return nothing
+    else
+        return (next, ())
+    end
+end
+
+Base.eltype(f::GribFile) = Message
+
+function Base.seekstart(f::GribFile)
+    newptr = ccall(:fopen, Ptr{File}, (Cstring, Cstring), f.filename, f.mode)
+    close(f.ptr)
+    f.ptr = newptr
+    f.pos = 0
+end
+
+""" Read without allocating a return vector """
+function readnoreturn(f::GribFile, nm::Integer)
+    total = length(f)
+    nm = nm + f.pos > total ? total - f.pos : nm
+    nm <= 0 && return
+    for i in 1:nm
+        Message(f)
+    end
+end
+
+"""
+    `read(f::GribFile[, nm::Integer])`
+
+Read `nm` messages from `f` and return as vector. Default is 1.
+"""
+function Base.read(f::GribFile, nm::Integer)
+    total = length(f)
+    nm = nm + f.pos > total ? total - f.pos : nm
+    nm <= 0 && return nothing
+    ret = Vector{Message}(undef, nm)
+    for i in 1:nm
+        ret[i] = Message(f)
+    end
+    return ret
+end
+Base.read(f::GribFile) = Message(f)
+
+"""
+    `position(f::GribFile)`
+
+Get the current position of the file.
+"""
+Base.position(f::GribFile) = f.pos
+
+"""
+    `seek(f::GribFile, n::Integer)`
+
+Seek the file to the given position `n`
+"""
+function Base.seek(f::GribFile, n::Integer)
+    if n < 0 || n > length(f)
+        throw(DomainError("n is out of range for file length $(length(f))"))
+    end
+    if n < f.pos
+        seekstart(f)
+        readnoreturn(f, n)
+    elseif n > f.pos
+        readnoreturn(f, n-f.pos)
+    end
+end
+
+"""
+    `skip(f::GribFile, offset::Integer)`
+
+Seek the file relative to the current position
+"""
+function Base.skip(f::GribFile, offset::Integer)
+    if f.pos + offset > length(f)
+        throw(DomainError("offset is out of range for file length $(length(f))"))
+    end
+    if offset < 0
+        oldpos = f.pos
+        seekstart(f)
+        readnoreturn(f, oldpos+offset)
+    else
+        readnoreturn(f, offset)
+    end
+end
+
+"""
+    `destroy(f::GribFile)`
+Safely close the file.
+"""
+function destroy(f::GribFile)
+    err = ccall(:fclose, Cint, (Ptr{File},), f.ptr)
+    if err !=0
+        throw(ErrorException("GribFile closed with errorcode $err"))
+    end
+end
+
+function close(f::Ptr{File})
+    err = ccall(:fclose, Cint, (Ptr{File},), f)
+    if err !=0
+        throw(ErrorException("GribFile closed with errorcode $err"))
+    end
+end
+
+# Functions related to printing
+function Base.show(io::IO, mime::MIME"text/plain", f::GribFile)
+    str = "GribFile $(f.filename) at position $(f.pos) in mode $(f.mode)"
+    print(io, str)
+end
+
