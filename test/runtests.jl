@@ -7,14 +7,13 @@ using Statistics
     GribFile(joinpath(dirname(@__FILE__), "samples", "regular_latlon_surface.grib2")) do f
 
         # Test that it only sees one message
-        @test length(f) == 1
+        @test f.nmessages == 1
         @test position(f) == 0
 
         # Get the message
         msg = Message(f)
 
-        # Test that length hasn't changed but position has
-        @test length(f) == 1
+        # Test that position has changed
         @test position(f) == 1
 
         # Test haskey
@@ -25,6 +24,7 @@ using Statistics
         @test msg["shortName"] == "2t"
         @test msg["level"] == 2
         @test missingvalue(msg) == 9999
+        @test typeof(maskedvalues(msg)) == Array{Union{Missing, Float64}, 2}
 
         # Test data
         lons, lats, vals = data(msg)

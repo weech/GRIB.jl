@@ -5,14 +5,14 @@ export Nearest, find, findmultiple, destroy
 mutable struct codes_nearest
 end
 
-""" An object used in finding nearest points """
 struct Nearest
     ptr::Ptr{codes_nearest}
 end
 
 """
-    `Nearest(handle::Message)`
-Create a Nearest from a Message
+    Nearest(handle::Message)
+
+Create a Nearest from a Message.
 """
 function Nearest(handle::Message)::Nearest
     eref = Ref(Int32(0))
@@ -23,7 +23,8 @@ function Nearest(handle::Message)::Nearest
 end
 
 """
-    `Nearest(f::Function, handle::Message)`
+    Nearest(f::Function, handle::Message)
+
 Create a Nearest from a Message and automatically destroy when finished.
 
 # Example
@@ -43,11 +44,12 @@ function Nearest(f::Function, handle::Message)
 end
 
 """
-    `find(near::Nearest, handle::Message, inlon::Float64, inlat::Float64; samepoint=true, samegrid=true)`
+    find(near::Nearest, handle::Message, inlon::Float64, inlat::Float64; samepoint=true, samegrid=true)
+
 Find the nearest 4 points to the given point sorted by distance.
 
 Setting samepoint and samegrid to true (default) speeds up the calculation but restricts the point
-and grid from changing from call to call. Distance is in kilometers.
+and grid, respectively, from changing from call to call. Distance is in kilometers.
 
 # Example
 ```Julia
@@ -78,7 +80,8 @@ function find(near::Nearest, handle::Message, inlon, inlat; samepoint=true, same
 end
 
 """
-    `findmultiple(handle::Message, inlons::Vector{Float64}, inlats::Vector{Float64}; islsm=false)`
+    findmultiple(handle::Message, inlons::Vector{Float64}, inlats::Vector{Float64}; islsm=false)
+
 Find the nearest point to each point given.
 
 Setting lsm to true finds the nearest land point and only works when `handle`
@@ -109,10 +112,7 @@ function findmultiple(handle::Message, inlons::Vector{Float64}, inlats::Vector{F
     return outlons, outlats, outvals, outdists
 end
 
-"""
-    `destroy(near::Nearest)`
-Safely destroy a nearest object.
-"""
+""" Safely destroy a nearest object. """
 function destroy(near::Nearest)::Nothing
     err = ccall((:codes_grib_nearest_delete, eccodes), Cint, (Ptr{codes_nearest},), near.ptr)
     errorcheck(err)

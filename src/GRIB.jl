@@ -1,11 +1,19 @@
-# NOTE TO SELF CHANGE FILE NAME LATER
+"""
+Module for accessing GRIB files. Open a file with `GribFile(filename)`.
+
+Exports
+-------
+Message, getbytes, writemessage, missingvalue, clone, data, maskedvalues,
+Index, addfile!, keycount, select!, destroy, Nearest, find, findmultiple,
+eachkey, keys, eachpoint, GribFile
+"""
 module GRIB
 
 const depfile = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
 if isfile(depfile)
     include(depfile)
 else
-    error("GRIB not properly installed. Please run Pkg.build(\"GRIB\")")
+    error("GRIB not properly installed. Please run Pkg.build(\"GRIB\").")
 end
 
 # Library constants

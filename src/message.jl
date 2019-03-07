@@ -1,18 +1,19 @@
 # Structs and constants related to the codes_handle type
 
-export Message, Message, getbytes, writemessage, missingvalue, clone, data, destroy
+export Message, getbytes, writemessage, missingvalue, clone, data, maskedvalues
 
 mutable struct codes_handle
 end
 
-""" Represents a message in the GribFile """
 mutable struct Message
     ptr::Ptr{codes_handle}
 end
 
 """
-    `Message(index::Index)`
-Retrieve the next message from the index.
+    Message(index::Index)
+    Message(file::GribFile)
+
+Retrieve the next message.
 
 Returns `nothing` if there are no more messages.
 """
@@ -32,12 +33,6 @@ function Message(index::Index)::Union{Message, Nothing}
     end
 end
 
-"""
-    `Message(file::GribFile)`
-Retrieve the next message from the file.
-
-Returns `nothing` if there are no more messages.
-"""
 function Message(file::GribFile)::Union{Message, Nothing}
     eref = Ref(Int32(0))
     ptr = ccall((:codes_grib_handle_new_from_file, eccodes), Ptr{codes_handle},
@@ -55,8 +50,12 @@ function Message(file::GribFile)::Union{Message, Nothing}
 end
 
 """
-    `Message(raw::Vector{UInt8})`
-Create a Message from a bytes array.
+    Message(raw::Vector{UInt8})
+    Message(messages::Vector{Vector{UInt8}})
+
+Create a Message from a bytes array or array of bytes arrays.
+
+The Message will share its underlying data with the inputed data.
 """
 function Message(raw::Vector{UInt8})
     ptr = ccall((:codes_handle_new_from_message, eccodes), Ptr{codes_handle},
@@ -70,10 +69,6 @@ function Message(raw::Vector{UInt8})
     return m
 end
 
-"""
-    `Message(messages::Vector{Vector{UInt8}})`
-Create a Message from a vector of bytes arrays.
-"""
 function Message(messages::Vector{Vector{UInt8}})
     sizes = map(length, messages)
     eref = Ref(Int32(0))
@@ -87,9 +82,9 @@ function Message(messages::Vector{Vector{UInt8}})
 end
 
 """
-    `getbytes(message::Message)`
+    getbytes(message::Message)
 
-Get a coded representation of the Message
+Get a coded representation of the Message.
 """
 function getbytes(message::Message)
     lenref = Ref(Csize_t(0))
@@ -102,7 +97,7 @@ function getbytes(message::Message)
 end
 
 """
-    `writemessage(handle::Message, filename::AbstractString; mode="c")`
+    writemessage(handle::Message, filename::AbstractString; mode="c")
 
 Write the message respresented by `handle` to the file at `filename`.
 
@@ -124,8 +119,9 @@ function Base.haskey(msg::Message, key::AbstractString)
 end
 
 """
-    `missingvalue(msg::Message)`
-Return the missing value of the message. If one isn't included returns 1e30
+    missingvalue(msg::Message)
+
+Return the missing value of the message. If one isn't included returns 1e30.
 """
 function missingvalue(msg::Message)
     if haskey(msg, "missingValue")
@@ -135,7 +131,22 @@ function missingvalue(msg::Message)
     end
 end
 
-""" Get the native type of a key """
+"""
+    maskedvalues(msg::Message)
+
+Return the values of the message masked so the missing value is `missing`.
+"""
+function maskedvalues(msg::Message)
+    missingval = missingvalue(msg)
+    vals = msg["values"]
+    masked = Array{Union{Float64, Missing}, 2}(undef, size(vals)...)
+    for i in eachindex(vals)
+        @inbounds masked[i] = vals[i] == missingval ? missing : vals[i]
+    end
+    return masked
+end
+
+""" Get the native type of a key. """
 function getnativetype(handle::Message, key::AbstractString)::DataType
     typeref = Ref(Int32(0))
     err = ccall((:codes_get_native_type, eccodes), Cint, (Ptr{codes_handle}, Cstring, Ref{Cint}),
@@ -159,7 +170,7 @@ function getnativetype(handle::Message, key::AbstractString)::DataType
     end
 end
 
-""" Get the number of values in a key """
+""" Get the number of values in a key. """
 function getsize(message::Message, key::AbstractString)
     lenref = Ref(Csize_t(0))
     err = ccall((:codes_get_size, eccodes), Cint, (Ptr{codes_handle}, Cstring, Ref{Csize_t}),
@@ -168,7 +179,7 @@ function getsize(message::Message, key::AbstractString)
     return lenref[]
 end
 
-""" Get the value of a key """
+""" Get the value of a key. """
 function Base.getindex(handle::Message, key::AbstractString)
     type = getnativetype(handle, key)
     len = getsize(handle, key)
@@ -241,21 +252,23 @@ function Base.getindex(handle::Message, key::AbstractString)
     end
 end
 
-""" Set the value of a key """
+"""
+    setindex!(message::Message, value, key::AbstractString)
+
+Set the value of a key.
+"""
 function Base.setindex!(handle::Message, value::Integer, key::AbstractString)
     err = ccall((:codes_set_long, eccodes), Cint, (Ptr{codes_handle}, Cstring, Clong),
                  handle.ptr, key, value)
     errorcheck(err)
 end
 
-""" Set the value of a key """
 function Base.setindex!(handle::Message, value::AbstractFloat, key::AbstractString)
     err = ccall((:codes_set_double, eccodes), Cint, (Ptr{codes_handle}, Cstring, Cdouble),
                  handle.ptr, key, value)
     errorcheck(err)
 end
 
-""" Set the value of a key """
 function Base.setindex!(handle::Message, value::AbstractString, key::AbstractString)
     lenref = Ref(Csize_t(length(value)))
     err = ccall((:codes_set_string, eccodes), Cint,
@@ -264,7 +277,6 @@ function Base.setindex!(handle::Message, value::AbstractString, key::AbstractStr
     errorcheck(err)
 end
 
-""" Set the value of a key """
 function Base.setindex!(handle::Message, value::Vector{UInt8}, key::AbstractString)
     lenref = Ref(Csize_t(length(value)))
     err = ccall((:codes_set_bytes, eccodes), Cint,
@@ -273,7 +285,6 @@ function Base.setindex!(handle::Message, value::Vector{UInt8}, key::AbstractStri
     errorcheck(err)
 end
 
-""" Set the value of a key """
 function Base.setindex!(handle::Message, value::Array{Float64}, key::AbstractString)
     len = Csize_t(length(value))
     err = ccall((:codes_set_double_array, eccodes), Cint,
@@ -282,7 +293,6 @@ function Base.setindex!(handle::Message, value::Array{Float64}, key::AbstractStr
     errorcheck(err)
 end
 
-""" Set the value of a key """
 function Base.setindex!(handle::Message, value::Array{Clong}, key::AbstractString)
     len = Csize_t(length(value))
     err = ccall((:codes_set_long_array, eccodes), Cint,
@@ -291,7 +301,6 @@ function Base.setindex!(handle::Message, value::Array{Clong}, key::AbstractStrin
     errorcheck(err)
 end
 
-""" Set the value of a key """
 function Base.setindex!(handle::Message, value::Array{String}, key::AbstractString)
     len = Csize_t(length(value))
     err = ccall((:codes_set_string_array, eccodes), Cint,
@@ -300,7 +309,7 @@ function Base.setindex!(handle::Message, value::Array{String}, key::AbstractStri
     errorcheck(err)
 end
 
-""" Duplicate a message """
+""" Duplicate a message. """
 function clone(handle::Message)::Union{Message, Nothing}
     ptr = ccall((:codes_handle_clone, eccodes), Ptr{codes_handle}, (Ptr{codes_handle},), handle.ptr)
     if ptr == C_NULL
@@ -317,7 +326,7 @@ Message(handle::Message) = clone(handle)
 Base.deepcopy(handle::Message) = clone(handle)
 
 """
-    `data(handle::Message)`
+    data(handle::Message)
 
 Retrieve the longitudes, latitudes, and values from the message.
 
@@ -350,7 +359,7 @@ function data(handle::Message)::Tuple{Array{Float64, 2}, Array{Float64, 2}, Arra
     end
 end
 
-""" Safely destroy a message handle """
+""" Safely destroy a message handle. """
 function destroy(handle::Message)
     if handle.ptr != C_NULL
         err = ccall((:codes_handle_delete, eccodes), Cint, (Ptr{codes_handle},), handle.ptr)

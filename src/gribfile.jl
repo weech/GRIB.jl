@@ -55,13 +55,6 @@ function GribFile(f::Function, filename::AbstractString; mode="r")
     end
 end
 
-"""
-    `length(f::GribFile)`
-
-Return the number of messages in `f`
-"""
-Base.length(f::GribFile) = f.nmessages
-
 function Base.iterate(f::GribFile, state=())
     next = Message(f)
     if next == nothing
@@ -82,7 +75,7 @@ end
 
 """ Read without allocating a return vector """
 function readnoreturn(f::GribFile, nm::Integer)
-    total = length(f)
+    total = f.nmessages
     nm = nm + f.pos > total ? total - f.pos : nm
     nm <= 0 && return
     for i in 1:nm
@@ -96,7 +89,7 @@ end
 Read `nm` messages from `f` and return as vector. Default is 1.
 """
 function Base.read(f::GribFile, nm::Integer)
-    total = length(f)
+    total = f.nmessages
     nm = nm + f.pos > total ? total - f.pos : nm
     nm <= 0 && return nothing
     ret = Vector{Message}(undef, nm)
@@ -120,8 +113,8 @@ Base.position(f::GribFile) = f.pos
 Seek the file to the given position `n`
 """
 function Base.seek(f::GribFile, n::Integer)
-    if n < 0 || n > length(f)
-        throw(DomainError("n is out of range for file length $(length(f))"))
+    if n < 0 || n > f.nmessages
+        throw(DomainError("n is out of range for file length $(f.nmessages)"))
     end
     if n < f.pos
         seekstart(f)
@@ -137,8 +130,8 @@ end
 Seek the file relative to the current position
 """
 function Base.skip(f::GribFile, offset::Integer)
-    if f.pos + offset > length(f)
-        throw(DomainError("offset is out of range for file length $(length(f))"))
+    if f.pos + offset > f.nmessages
+        throw(DomainError("offset is out of range for file length $(f.nmessages)"))
     end
     if offset < 0
         oldpos = f.pos

@@ -60,7 +60,7 @@ function Base.iterate(iter::Message, state=(keys(iter),))
 end
 
 """
-    `keys(message::Message)`
+    keys(message::Message)
 
 Iterate through each key in the message.
 
@@ -78,7 +78,7 @@ function Base.keys(handle::Message)
 end
 
 """
-    `values(message::Message)`
+    values(message::Message)
 
 Iterate through each value in the message.
 
@@ -111,7 +111,7 @@ struct GribIterator
 end
 
 """
-    `eachpoint(message::Message)`
+    eachpoint(message::Message)
 
 Iterate through each point in the message, returning the lon, lat, and value.
 
