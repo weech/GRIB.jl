@@ -171,4 +171,64 @@ using Statistics
     end
     @test_throws SystemError GribFile(joinpath(dirname(@__FILE__), "samples", "nofilehere.grb"))
 
+    # Test multi-field
+    GribFile(joinpath(dirname(@__FILE__), "samples", "isobaricsmaller.grb2")) do f
+        @test f.nmessages == 18
+        shortnames = Set{String}()
+        for msg in f
+            push!(shortnames, msg["shortName"])
+        end
+        @test "v" in shortnames
+    end
+
+    GribFile(joinpath(dirname(@__FILE__), "samples", "isobaricsmaller.grb2")) do f
+        @test eltype(f) == Message
+        msgs = read(f, 2)
+        @test length(msgs) == 2
+        @test position(f) == 2
+        seekstart(f)
+        @test position(f) == 0
+        seek(f, 3)
+        @test position(f) == 3
+        skip(f, -2)
+        @test position(f) == 1
+        skip(f, 1)
+        @test position(f) == 2
+        seek(f, 1)
+        @test position(f) == 1
+        @test_throws DomainError seek(f, 19)
+        seek(f, 11)
+        @test_throws DomainError skip(f, 10)
+    end
+
+    nomultisupport()
+    GribFile(joinpath(dirname(@__FILE__), "samples", "isobaricsmaller.grb2")) do f
+        @test f.nmessages == 12
+        shortnames = Set{String}()
+        for msg in f
+            push!(shortnames, msg["shortName"])
+        end
+        @test !("v" in shortnames)
+    end
+
+    GribFile(joinpath(dirname(@__FILE__), "samples", "isobaricsmaller.grb2")) do f
+        @test eltype(f) == Message
+        msgs = read(f, 2)
+        @test length(msgs) == 2
+        @test position(f) == 2
+        seekstart(f)
+        @test position(f) == 0
+        seek(f, 3)
+        @test position(f) == 3
+        skip(f, -2)
+        @test position(f) == 1
+        skip(f, 1)
+        @test position(f) == 2
+        seek(f, 1)
+        @test position(f) == 1
+        @test_throws DomainError seek(f, 15)
+        seek(f, 11)
+        @test_throws DomainError skip(f, 3)
+    end
+
 end

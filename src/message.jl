@@ -373,8 +373,9 @@ function Base.show(io::IO, mime::MIME"text/plain", message::Message)
     dispkeys = ["date", "gridType", "stepRange", "typeOfLevel", "level",
                  "shortName", "name"]
     dispkeys = [k for k in dispkeys if haskey(message, k)]
-    line1 = join([rpad(k, 18) for k in dispkeys]) * "\n"
-    line2 = join([rpad(message[k], 18) for k in dispkeys])
+    offsets = [9, 15, 10, 18, 6, 10, 4]
+    line1 = strip(join([rpad(k, offsets[i]) for (i, k) in enumerate(dispkeys)])) * "\n"
+    line2 = strip(join([rpad(message[k], offsets[i]) for (i, k) in enumerate(dispkeys)]))
     print(io, line1 * line2)
 end
 

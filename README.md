@@ -20,8 +20,8 @@ by ecCodes on access. Some commonly used keys include:
 
 
 ## Installation
-This package can be installed from the Julia shell with `import Pkg; Pkg.add("GRIB")`, or by
-issuing `add GRIB` at the Pkg prompt.
+Currently working on getting this added to the general registry. For now you can add it with
+`add https://github.com/weech/GRIB.jl` from the Pkg prompt.
 
 ## GribFile
 A `GribFile` functions similarly to a Julia `IOStream`, except that instead of working as a stream
@@ -111,21 +111,22 @@ This example selects all messages that are temperature at the 500 hPa level. Ind
 invaluable for reducing the complexity of the file before retreiving data from it. There are
 a few important things to note:
 * Only keys passed to the `Index` when it is created can be `select!`ed.
-* At least one key must be `select!`ed before accessing any messages.
+* All keys passed to `Index` must be `select!`ed before accessing any messages.
 * Like with `GribFile`, retreiving a message from an `Index` advances the `Index`.
+* Only the last value `select!`ed per key
 
-## Notes
+## Other notes
+This package has support for multi-field messages on by default. If you are not working with files
+with multi-field messages, you may turn off support with `nomultisupport`.
+
+## Bug Reporting
 This package has been tested mainly with well-behaved GRIB files, but some files exist that
 push the boundaries of the format. If you encounter any issues, please file an issue. A good issue
 has
 * A full stack trace. The error can't be understood without knowing where it comes from.
 * The file causing the issue, if possible.
-  The [`grib_filter`](https://confluence.ecmwf.int/display/ECC/grib_filter) program downloaded
-  with this package is a good tool for reducing the size of a file by splitting it into parts.
-
-Before submitting an issue, [check to see if your file is a multi-field GRIB](https://confluence.ecmwf.int/display/ECC/Frequently+Asked+Questions#FrequentlyAskedQuestions-HowdoIknowifIamdealingwithamulti-fieldGRIBfile?).
-This package will support multi-field GRIB files in a future release.
+* A hypothesis of what you think is going wrong.
 
 ## Future plans
-* Add support for multi-field GRIB files
 * Add support for BUFR files
+* Add examples

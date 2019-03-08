@@ -5,9 +5,11 @@ Exports
 -------
 Message, getbytes, writemessage, missingvalue, clone, data, maskedvalues,
 Index, addfile!, keycount, select!, destroy, Nearest, find, findmultiple,
-eachkey, keys, eachpoint, GribFile
+eachkey, keys, eachpoint, GribFile, nomultisupport
 """
 module GRIB
+
+export nomultisupport
 
 const depfile = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
 if isfile(depfile)
@@ -124,6 +126,21 @@ const errors = [
 end
 
 mutable struct codes_context
+end
+
+# Turn on multi-field support by default
+function __init__()
+    ccall((:codes_grib_multi_support_on, eccodes), Cvoid, (Ptr{codes_context},), C_NULL)
+end
+
+"""
+    nomultisupport
+
+Turn off multi-field message support. Recommended if you are sure no files you will
+work with in this session will have multi-field messages.
+"""
+function nomultisupport()
+    ccall((:codes_grib_multi_support_off, eccodes), Cvoid, (Ptr{codes_context},), C_NULL)
 end
 
 include("index.jl")
