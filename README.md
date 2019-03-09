@@ -6,6 +6,7 @@ collection of independent records that store 2D data. This package is an interfa
 GRIB file is composed of a series of messages, and a message is an object with keys and values.
 Each message has many keys. Some are actually stored in the data, while others are computed
 by ecCodes on access. Some commonly used keys include:
+
 | key         | value                         |
 | ----------- | ----------------------------- |
 | name        | long name of the quantity     |
