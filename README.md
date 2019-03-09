@@ -22,7 +22,7 @@ by ecCodes on access. Some commonly used keys include:
 
 ## Installation
 Currently working on getting this added to the general registry. For now you can add it with
-`add https://github.com/weech/GRIB.jl` from the Pkg prompt.
+`add https://github.com/weech/GRIB.jl` from the Pkg prompt. It uses the conda package manager for dependencies, so installation will be slow if it is not already installed.
 
 ## GribFile
 A `GribFile` functions similarly to a Julia `IOStream`, except that instead of working as a stream
@@ -114,7 +114,7 @@ a few important things to note:
 * Only keys passed to the `Index` when it is created can be `select!`ed.
 * All keys passed to `Index` must be `select!`ed before accessing any messages.
 * Like with `GribFile`, retreiving a message from an `Index` advances the `Index`.
-* Only the last value `select!`ed per key
+* Only the latest value `select!`ed per key is kept in the `Index`.
 
 ## Other notes
 This package has support for multi-field messages on by default. If you are not working with files

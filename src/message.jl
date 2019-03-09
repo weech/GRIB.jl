@@ -181,9 +181,9 @@ end
 
 """ Get the value of a key. """
 function Base.getindex(handle::Message, key::AbstractString)
-    type = getnativetype(handle, key)
+    typ = getnativetype(handle, key)
     len = getsize(handle, key)
-    if type == String
+    if typ == String
         bufr = UInt(1024)
         bufref = Ref(bufr)
         mesg = zeros(Cuchar, bufr)
@@ -194,7 +194,7 @@ function Base.getindex(handle::Message, key::AbstractString)
         mesgstr = rstrip(transcode(String, mesg), '\0')
         errorcheck(err)
         return mesgstr
-    elseif type == Float64
+    elseif typ == Float64
         if len == 1
             valref = Ref(Float64(0))
             err = ccall((:codes_get_double, eccodes), Cint,
@@ -222,7 +222,7 @@ function Base.getindex(handle::Message, key::AbstractString)
                 return vals
             end
         end
-    elseif type == Clong
+    elseif typ == Clong
         if len == 1
             valref = Ref(Clong(0))
             err = ccall((:codes_get_long, eccodes), Cint, (Ptr{codes_handle}, Cstring, Ref{Clong}),
@@ -238,7 +238,7 @@ function Base.getindex(handle::Message, key::AbstractString)
             errorcheck(err)
             return vals
         end
-    elseif type == Vector{UInt8}
+    elseif typ == Vector{UInt8}
         bufr = UInt(1024)
         bufref = Ref(bufr)
         mesg = Vector{UInt8}(undef, bufr)
