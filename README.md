@@ -22,7 +22,10 @@ by ecCodes on access. Some commonly used keys include:
 
 ## Installation
 Currently working on getting this added to the general registry. For now you can add it with
-`add https://github.com/weech/GRIB.jl` from the Pkg prompt. It uses the conda package manager for dependencies, so installation will be slow if it is not already installed.
+`add https://github.com/weech/GRIB.jl` from the Pkg prompt. It uses the conda package manager 
+for dependencies, so installation will be slow if it is not already installed.
+
+Windows is known to be broken, and MacOS is untested. Any help with these would be appreciated.
 
 ## GribFile
 A `GribFile` functions similarly to a Julia `IOStream`, except that instead of working as a stream

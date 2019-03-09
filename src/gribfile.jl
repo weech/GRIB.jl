@@ -27,7 +27,7 @@ function GribFile(filename::AbstractString; mode="r")
     f = ccall(:fopen, Ptr{File}, (Cstring, Cstring), filename, mode)
 
     nref = Ref(Int32(0))
-    err = ccall((:codes_count_in_file, eccodes), Cint, (Ptr{codes_index}, Ptr{File}, Ref{Cint}),
+    err = ccall((:codes_count_in_file, eccodes), Cint, (Ptr{codes_context}, Ptr{File}, Ref{Cint}),
                 C_NULL, f, nref)
     errorcheck(err)
 
