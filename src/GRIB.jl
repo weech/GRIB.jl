@@ -11,6 +11,8 @@ module GRIB
 
 export nomultisupport
 
+using Libdl
+
 const depfile = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
 if isfile(depfile)
     include(depfile)
