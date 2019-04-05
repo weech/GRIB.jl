@@ -120,6 +120,8 @@ a few important things to note:
 * All keys passed to `Index` must be `select!`ed before accessing any messages.
 * Like with `GribFile`, retreiving a message from an `Index` advances the `Index`.
 * Only the latest value `select!`ed per key is kept in the `Index`.
+* Files with multi-field messages cannot be used with `Index`. This includes most files created
+  by NCEP.
 
 ## Other notes
 This package has support for multi-field messages on by default. If you are not working with files
@@ -136,5 +138,5 @@ has
 ## Future plans
 * Add support for BUFR files
 * Add examples
-* Fix the bug in `eachpoints` that occasionally causes Julia to segfault (probably something with
+* Fix the bug in `eachpoint` that occasionally causes Julia to segfault (probably something with
   the GC).

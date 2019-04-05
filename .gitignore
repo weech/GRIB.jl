@@ -1,5 +1,4 @@
 /deps/deps.jl
 *.log
 *.cov
-Manifest.toml
 /test/samples/modified_latlon_surface.grib2
