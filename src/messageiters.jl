@@ -1,6 +1,6 @@
 # Structs and functions related to the various iterators in eccodes
 
-export eachkey, keys, eachpoint
+export eachpoint
 
 mutable struct codes_keys_iterator
 end
