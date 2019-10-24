@@ -21,10 +21,10 @@ by ecCodes on access. Some commonly used keys include:
 
 
 ## Installation
-There are few small bugs I want to work out before registering this package.
+I don't know the procedure for registering a package; if you know how please feel free to help!
 For now you can add it with
 `add https://github.com/weech/GRIB.jl` from the Pkg prompt. It uses the conda package manager
-for dependencies, so installation will be slow if it is not already installed.
+for dependencies, so installation will be slow if the dependencies are not already installed.
 
 This package only works on Linux and MacOS. Any help getting it to work with other operating systems
 would be much appreciated.
@@ -43,7 +43,6 @@ Using the `do`-block construct guarantees that the resources are released after 
 f = GribFile(filename)
 # Do things with f
 destroy(f)
-end
 ```
 is also valid, but be sure to call `destroy` when finished with the file.
 
@@ -125,7 +124,8 @@ a few important things to note:
 
 ## Other notes
 This package has support for multi-field messages on by default. If you are not working with files
-with multi-field messages, you may turn off support with `nomultisupport`.
+with multi-field messages, you may turn off support with a call
+to the function `nomultisupport`.
 
 ## Bug Reporting
 This package has been tested mainly with well-behaved GRIB files, but some files exist that
@@ -135,8 +135,9 @@ has
 * The file causing the issue, if possible.
 * A hypothesis of what you think is going wrong.
 
-## Future plans
+## Future plans (good places to help out)
 * Add support for BUFR files
 * Add examples
 * Fix the bug in `eachpoint` that occasionally causes Julia to segfault (probably something with
   the GC).
+
