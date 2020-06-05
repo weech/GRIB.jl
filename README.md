@@ -21,13 +21,11 @@ by ecCodes on access. Some commonly used keys include:
 
 
 ## Installation
-I don't know the procedure for registering a package; if you know how please feel free to help!
-For now you can add it with
-`add https://github.com/weech/GRIB.jl` from the Pkg prompt. It uses the conda package manager
-for dependencies, so installation will be slow if the dependencies are not already installed.
+You can install this package through the normal methods:
+`Pkg.add("GRIB")` or `]add GRIB`. 
 
-This package only works on Linux and MacOS. Any help getting it to work with other operating systems
-would be much appreciated.
+This package currently doesn't work on Windows. Any help in
+getting it to work would be greatly appreciated!
 
 ## GribFile
 A `GribFile` functions similarly to a Julia `IOStream`, except that instead of working as a stream

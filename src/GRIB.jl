@@ -9,16 +9,9 @@ eachkey, keys, eachpoint, GribFile, nomultisupport
 """
 module GRIB
 
+using eccodes_jll
+
 export nomultisupport
-
-using Libdl
-
-const depfile = joinpath(dirname(@__FILE__), "..", "deps", "deps.jl")
-if isfile(depfile)
-    include(depfile)
-else
-    error("GRIB not properly installed. Please run Pkg.build(\"GRIB\").")
-end
 
 # Library constants
 const CODES_NEAREST_SAME_GRID = 1 << 0
@@ -132,6 +125,16 @@ end
 
 # Turn on multi-field support by default
 function __init__()
+    if Sys.iswindows()
+        @warn "You are using GRIB.jl on Windows which is currently is not supported. You will likely hit a ReadOnlyMemoryError, and, if you know how to get around it, please let us know!"
+    end
+
+    # Let library know where its own shared data is
+    share = joinpath(dirname(eccodes_jll.eccodes_path), "..", "share", "eccodes")
+    ENV["ECCODES_DEFINITION_PATH"] = joinpath(share, "definitions")
+    ENV["ECCODES_SAMPLES_PATH"] = joinpath(share, "samples")
+
+    # Turn on multi-field support by default for straightforward use of NCEP files
     ccall((:codes_grib_multi_support_on, eccodes), Cvoid, (Ptr{codes_context},), C_NULL)
 end
 
