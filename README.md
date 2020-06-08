@@ -21,8 +21,8 @@ by ecCodes on access. Some commonly used keys include:
 
 
 ## Installation
-You can install this package through the normal methods:
-`Pkg.add("GRIB")` or `]add GRIB`. 
+The package is currently in the black hole that is registration, but for now you can add it with
+`]add https://github.com/weech/GRIB.jl` or `Pkg.add("https://github.com/weech/GRIB.jl")`.
 
 This package currently doesn't work on Windows. Any help in
 getting it to work would be greatly appreciated!
