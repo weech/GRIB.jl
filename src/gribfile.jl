@@ -66,6 +66,8 @@ end
 
 Base.eltype(f::GribFile) = Message
 
+Base.IteratorSize(f::GribFile) = Base.SizeUnknown()
+
 function Base.seekstart(f::GribFile)
     newptr = ccall(:fopen, Ptr{File}, (Cstring, Cstring), f.filename, f.mode)
     close(f.ptr)

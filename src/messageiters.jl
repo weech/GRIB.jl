@@ -36,6 +36,8 @@ function Base.iterate(iter::EachKey, state=())
     end
 end
 
+Base.IteratorSize(iter::EachKey) = Base.SizeUnknown()
+
 struct EachValue
     keyiter::EachKey
 end
@@ -58,6 +60,8 @@ function Base.iterate(iter::Message, state=(keys(iter),))
         return (ret[1] => iter[ret[1]], (keyitr,))
     end
 end
+
+Base.IteratorSize(iter::EachValue) = Base.SizeUnknown()
 
 """
     keys(message::Message)

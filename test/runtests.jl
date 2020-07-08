@@ -231,4 +231,12 @@ using Statistics
         @test_throws DomainError skip(f, 3)
     end
 
+    # Test that iterator methods are defined because Julia assumes weird defaults
+    GribFile(joinpath(dirname(@__FILE__), "samples", "isobaricsmaller.grb2")) do f
+       @test Base.IteratorSize(f) == Base.SizeUnknown()
+       msg = read(f)
+       @test Base.IteratorSize(keys(msg)) == Base.SizeUnknown()
+       @test Base.IteratorSize(values(msg)) == Base.SizeUnknown()
+    end
+
 end

@@ -97,7 +97,7 @@ function getbytes(message::Message)
 end
 
 """
-    writemessage(handle::Message, filename::AbstractString; mode="c")
+    writemessage(handle::Message, filename::AbstractString; mode="w")
 
 Write the message respresented by `handle` to the file at `filename`.
 
