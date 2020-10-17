@@ -239,4 +239,9 @@ using Statistics
        @test Base.IteratorSize(values(msg)) == Base.SizeUnknown()
     end
 
+    # Test that the local definitions are working
+    GribFile(joinpath(dirname(@__FILE__), "samples", "hrrr.echotop.grib2")) do f 
+        msg = read(f)
+        @test msg["name"] == "Echo Top"
+    end
 end
