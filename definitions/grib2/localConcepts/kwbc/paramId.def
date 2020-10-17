@@ -1,21 +1,203 @@
 #Echo Top
 '70016003' = {
-	discipline = 0;
-	parameterCategory = 16;
-	parameterNumber = 3;
-}
-
-#Echo Top
-'70016197' = {
-	discipline = 0;
-	parameterCategory = 16;
-	parameterNumber = 197;
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 3;
 }
 
 #Hourly Maximum of Simulated Reflectivity at 1 km AGL
 '70016198' = {
-	discipline = 0;
-	parameterCategory = 16;
-	parameterNumber = 198;
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 198;
+}
+
+#Composite reflectivity
+'70016196' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 196;
+}
+
+#Reflectivity
+'70016195' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 195;
+}
+
+#Hourly Maximum of Upward Vertical Velocity  in the lowest 400hPa
+'70002220' = {
+    discipline = 0;
+    parameterCategory = 2;
+    parameterNumber = 220;
+}
+
+#Hourly Maximum of Downward Vertical Velocity  in the lowest 400hPa
+'70002221' = {
+    discipline = 0;
+    parameterCategory = 2;
+    parameterNumber = 221;
+}
+
+#U Component of Hourly Maximum 10m Wind Speed
+'70002222' = {
+    discipline = 0;
+    parameterCategory = 2;
+    parameterNumber = 222;
+}
+
+#V Component of Hourly Maximum 10m Wind Speed
+'70002223' = {
+    discipline = 0;
+    parameterCategory = 2;
+    parameterNumber = 223;
+}
+
+#Hourly Maximum of Updraft Helicity over Layer 2km to 5 km AGL
+'70007199' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 199;
+}
+
+#Hourly Minimum of Updraft Helicity
+'70007200' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 200;
+}
+
+#Convective Available Potential Energy
+'70007006' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 6;
+}
+
+#Convective Inhibition
+'70007007' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 7;
+}
+
+#Best (4 layer) Lifted Index
+'70007193' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 193;
+}
+
+#Total Column Integrate Graupel
+'70001074' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 74;
+}
+
+#Frozen Rain
+'70001227' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 227;
+}
+
+#Relative Humidity with Respect to Precipitable Water
+'70001242' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 242;
+}
+
+#Total Precipitation
+'70001008' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 8;
+}
+
+#Freezing Rain
+'70001225' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 225;
+}
+
+#MSLP (MAPS System Reduction)
+'70003198' = {
+    discipline = 0;
+    parameterCategory = 3;
+    parameterNumber = 198;
+}
+
+#Pressure of level from which parcel was lifted
+'70003200' = {
+    discipline = 0;
+    parameterCategory = 3;
+    parameterNumber = 200;
+}
+
+#Lightning
+'70017192' = {
+    discipline = 0;
+    parameterCategory = 17;
+    parameterNumber = 192;
+}
+
+#Total Cloud Cover
+'70006001' = {
+    discipline = 0;
+    parameterCategory = 6;
+    parameterNumber = 1;
+}
+
+#Visible Beam Downward Solar Flux
+'70004200' = {
+    discipline = 0;
+    parameterCategory = 4;
+    parameterNumber = 200;
+}
+
+#Visible Diffuse Downward Solar Flux
+'70004201' = {
+    discipline = 0;
+    parameterCategory = 4;
+    parameterNumber = 201;
+}
+
+#Simulated Brightness Temperature for GOES 12, Channel 3
+'73192001' = {
+    discipline = 3;
+    parameterCategory = 192;
+    parameterNumber = 1;
+}
+
+#Simulated Brightness Temperature for GOES 12, Channel 4
+'73192002' = {
+    discipline = 3;
+    parameterCategory = 192;
+    parameterNumber = 2;
+}
+
+#Simulated Brightness Temperature for GOES 11, Channel 3
+'73192007' = {
+    discipline = 3;
+    parameterCategory = 192;
+    parameterNumber = 7;
+}
+
+#Simulated Brightness Temperature for GOES 11, Channel 4
+'73192008' = {
+    discipline = 3;
+    parameterCategory = 192;
+    parameterNumber = 8;
+}
+
+#Moisture Availability
+'72000194' = {
+    discipline = 2;
+    parameterCategory = 0;
+    parameterNumber = 194;
 }
 

@@ -1,20 +1,203 @@
 #Echo Top
 'm' = {
-	discipline = 0;
-	parameterCategory = 16;
-	parameterNumber = 3;
-}
-
-#Echo Top
-'m' = {
-	discipline = 0;
-	parameterCategory = 16;
-	parameterNumber = 197;
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 3;
 }
 
 #Hourly Maximum of Simulated Reflectivity at 1 km AGL
 'dB' = {
-	discipline = 0;
-	parameterCategory = 16;
-	parameterNumber = 198;
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 198;
 }
+
+#Composite reflectivity
+'dB' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 196;
+}
+
+#Reflectivity
+'dB' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 195;
+}
+
+#Hourly Maximum of Upward Vertical Velocity  in the lowest 400hPa
+'m s**-1' = {
+    discipline = 0;
+    parameterCategory = 2;
+    parameterNumber = 220;
+}
+
+#Hourly Maximum of Downward Vertical Velocity  in the lowest 400hPa
+'m s**-1' = {
+    discipline = 0;
+    parameterCategory = 2;
+    parameterNumber = 221;
+}
+
+#U Component of Hourly Maximum 10m Wind Speed
+'m s**-1' = {
+    discipline = 0;
+    parameterCategory = 2;
+    parameterNumber = 222;
+}
+
+#V Component of Hourly Maximum 10m Wind Speed
+'m s**-1' = {
+    discipline = 0;
+    parameterCategory = 2;
+    parameterNumber = 223;
+}
+
+#Hourly Maximum of Updraft Helicity over Layer 2km to 5 km AGL
+'m**2 s**-2' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 199;
+}
+
+#Hourly Minimum of Updraft Helicity
+'m**2 s**-2' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 200;
+}
+
+#Convective Available Potential Energy
+'J kg**-1' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 6;
+}
+
+#Convective Inhibition
+'J kg**-1' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 7;
+}
+
+#Best (4 layer) Lifted Index
+'K' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 193;
+}
+
+#Total Column Integrate Graupel
+'kg m**-2' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 74;
+}
+
+#Frozen Rain
+'kg m**-2' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 227;
+}
+
+#Relative Humidity with Respect to Precipitable Water
+'%' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 242;
+}
+
+#Total Precipitation
+'kg m**-2' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 8;
+}
+
+#Freezing Rain
+'kg m**-2' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 225;
+}
+
+#MSLP (MAPS System Reduction)
+'Pa' = {
+    discipline = 0;
+    parameterCategory = 3;
+    parameterNumber = 198;
+}
+
+#Pressure of level from which parcel was lifted
+'Pa' = {
+    discipline = 0;
+    parameterCategory = 3;
+    parameterNumber = 200;
+}
+
+#Lightning
+'non-dim' = {
+    discipline = 0;
+    parameterCategory = 17;
+    parameterNumber = 192;
+}
+
+#Total Cloud Cover
+'%' = {
+    discipline = 0;
+    parameterCategory = 6;
+    parameterNumber = 1;
+}
+
+#Visible Beam Downward Solar Flux
+'W m**-2' = {
+    discipline = 0;
+    parameterCategory = 4;
+    parameterNumber = 200;
+}
+
+#Visible Diffuse Downward Solar Flux
+'W m**-2' = {
+    discipline = 0;
+    parameterCategory = 4;
+    parameterNumber = 201;
+}
+
+#Simulated Brightness Temperature for GOES 12, Channel 3
+'K' = {
+    discipline = 3;
+    parameterCategory = 192;
+    parameterNumber = 1;
+}
+
+#Simulated Brightness Temperature for GOES 12, Channel 4
+'K' = {
+    discipline = 3;
+    parameterCategory = 192;
+    parameterNumber = 2;
+}
+
+#Simulated Brightness Temperature for GOES 11, Channel 3
+'K' = {
+    discipline = 3;
+    parameterCategory = 192;
+    parameterNumber = 7;
+}
+
+#Simulated Brightness Temperature for GOES 11, Channel 4
+'K' = {
+    discipline = 3;
+    parameterCategory = 192;
+    parameterNumber = 8;
+}
+
+#Moisture Availability
+'%' = {
+    discipline = 2;
+    parameterCategory = 0;
+    parameterNumber = 194;
+}
+
