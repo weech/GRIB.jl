@@ -12,6 +12,20 @@
     parameterNumber = 198;
 }
 
+#Composite reflectivity
+'refc' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 196;
+}
+
+#Reflectivity
+'refd' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 195;
+}
+
 #Hourly Maximum of Upward Vertical Velocity  in the lowest 400hPa
 'maxuvv' = {
     discipline = 0;
@@ -54,6 +68,27 @@
     parameterNumber = 200;
 }
 
+#Convective Available Potential Energy
+'cape' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 6;
+}
+
+#Convective Inhibition
+'cin' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 7;
+}
+
+#Best (4 layer) Lifted Index
+'4lftx' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 193;
+}
+
 #Total Column Integrate Graupel
 'tcolg' = {
     discipline = 0;
@@ -73,6 +108,62 @@
     discipline = 0;
     parameterCategory = 1;
     parameterNumber = 242;
+}
+
+#Total Precipitation
+'apcp' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 8;
+}
+
+#Freezing Rain
+'frzr' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 225;
+}
+
+#MSLP (MAPS System Reduction)
+'mslma' = {
+    discipline = 0;
+    parameterCategory = 3;
+    parameterNumber = 198;
+}
+
+#Pressure of level from which parcel was lifted
+'plpl' = {
+    discipline = 0;
+    parameterCategory = 3;
+    parameterNumber = 200;
+}
+
+#Reserved for Local Use
+'' = {
+    discipline = 0;
+    parameterCategory = 17;
+    parameterNumber = 192;
+}
+
+#Total Cloud Cover
+'tcdc' = {
+    discipline = 0;
+    parameterCategory = 6;
+    parameterNumber = 1;
+}
+
+#Visible Beam Downward Solar Flux
+'vbdsf' = {
+    discipline = 0;
+    parameterCategory = 4;
+    parameterNumber = 200;
+}
+
+#Visible Diffuse Downward Solar Flux
+'vddsf' = {
+    discipline = 0;
+    parameterCategory = 4;
+    parameterNumber = 201;
 }
 
 #Simulated Brightness Temperature for GOES 12, Channel 3
@@ -101,5 +192,12 @@
     discipline = 3;
     parameterCategory = 192;
     parameterNumber = 8;
+}
+
+#Moisture Availability
+'mstav' = {
+    discipline = 2;
+    parameterCategory = 0;
+    parameterNumber = 194;
 }
 

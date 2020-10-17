@@ -12,6 +12,20 @@
     parameterNumber = 198;
 }
 
+#Composite reflectivity
+'70016196' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 196;
+}
+
+#Reflectivity
+'70016195' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 195;
+}
+
 #Hourly Maximum of Upward Vertical Velocity  in the lowest 400hPa
 '70002220' = {
     discipline = 0;
@@ -54,6 +68,27 @@
     parameterNumber = 200;
 }
 
+#Convective Available Potential Energy
+'70007006' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 6;
+}
+
+#Convective Inhibition
+'70007007' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 7;
+}
+
+#Best (4 layer) Lifted Index
+'70007193' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 193;
+}
+
 #Total Column Integrate Graupel
 '70001074' = {
     discipline = 0;
@@ -73,6 +108,62 @@
     discipline = 0;
     parameterCategory = 1;
     parameterNumber = 242;
+}
+
+#Total Precipitation
+'70001008' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 8;
+}
+
+#Freezing Rain
+'70001225' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 225;
+}
+
+#MSLP (MAPS System Reduction)
+'70003198' = {
+    discipline = 0;
+    parameterCategory = 3;
+    parameterNumber = 198;
+}
+
+#Pressure of level from which parcel was lifted
+'70003200' = {
+    discipline = 0;
+    parameterCategory = 3;
+    parameterNumber = 200;
+}
+
+#Reserved for Local Use
+'70017192' = {
+    discipline = 0;
+    parameterCategory = 17;
+    parameterNumber = 192;
+}
+
+#Total Cloud Cover
+'70006001' = {
+    discipline = 0;
+    parameterCategory = 6;
+    parameterNumber = 1;
+}
+
+#Visible Beam Downward Solar Flux
+'70004200' = {
+    discipline = 0;
+    parameterCategory = 4;
+    parameterNumber = 200;
+}
+
+#Visible Diffuse Downward Solar Flux
+'70004201' = {
+    discipline = 0;
+    parameterCategory = 4;
+    parameterNumber = 201;
 }
 
 #Simulated Brightness Temperature for GOES 12, Channel 3
@@ -101,5 +192,12 @@
     discipline = 3;
     parameterCategory = 192;
     parameterNumber = 8;
+}
+
+#Moisture Availability
+'72000194' = {
+    discipline = 2;
+    parameterCategory = 0;
+    parameterNumber = 194;
 }
 
