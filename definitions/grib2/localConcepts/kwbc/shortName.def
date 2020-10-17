@@ -1,21 +1,105 @@
-
 #Echo Top
 'retop' = {
-	discipline = 0;
-	parameterCategory = 16;
-	parameterNumber = 3;
-}
-
-#Echo Top
-'retop' = {
-	discipline = 0;
-	parameterCategory = 16;
-	parameterNumber = 197;
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 3;
 }
 
 #Hourly Maximum of Simulated Reflectivity at 1 km AGL
 'maxref' = {
-	discipline = 0;
-	parameterCategory = 16;
-	parameterNumber = 198;
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 198;
 }
+
+#Hourly Maximum of Upward Vertical Velocity  in the lowest 400hPa
+'maxuvv' = {
+    discipline = 0;
+    parameterCategory = 2;
+    parameterNumber = 220;
+}
+
+#Hourly Maximum of Downward Vertical Velocity  in the lowest 400hPa
+'maxdvv' = {
+    discipline = 0;
+    parameterCategory = 2;
+    parameterNumber = 221;
+}
+
+#U Component of Hourly Maximum 10m Wind Speed
+'maxuw' = {
+    discipline = 0;
+    parameterCategory = 2;
+    parameterNumber = 222;
+}
+
+#V Component of Hourly Maximum 10m Wind Speed
+'maxvw' = {
+    discipline = 0;
+    parameterCategory = 2;
+    parameterNumber = 223;
+}
+
+#Hourly Maximum of Updraft Helicity over Layer 2km to 5 km AGL
+'mxuphl' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 199;
+}
+
+#Hourly Minimum of Updraft Helicity
+'mnuphl' = {
+    discipline = 0;
+    parameterCategory = 7;
+    parameterNumber = 200;
+}
+
+#Total Column Integrate Graupel
+'tcolg' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 74;
+}
+
+#Frozen Rain
+'frozr' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 227;
+}
+
+#Relative Humidity with Respect to Precipitable Water
+'rhpw' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 242;
+}
+
+#Simulated Brightness Temperature for GOES 12, Channel 3
+'sbt123' = {
+    discipline = 3;
+    parameterCategory = 192;
+    parameterNumber = 1;
+}
+
+#Simulated Brightness Temperature for GOES 12, Channel 4
+'sbt124' = {
+    discipline = 3;
+    parameterCategory = 192;
+    parameterNumber = 2;
+}
+
+#Simulated Brightness Temperature for GOES 11, Channel 3
+'sbt113' = {
+    discipline = 3;
+    parameterCategory = 192;
+    parameterNumber = 7;
+}
+
+#Simulated Brightness Temperature for GOES 11, Channel 4
+'sbt114' = {
+    discipline = 3;
+    parameterCategory = 192;
+    parameterNumber = 8;
+}
+
