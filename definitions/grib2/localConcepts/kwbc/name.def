@@ -9,7 +9,7 @@
 'Echo Top' = {
 	discipline = 0;
 	parameterCategory = 16;
-	parameterNumber = 3;
+	parameterNumber = 197;
 }
 
 #Hourly Maximum of Simulated Reflectivity at 1 km AGL
