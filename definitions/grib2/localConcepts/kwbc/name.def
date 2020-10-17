@@ -1,0 +1,20 @@
+#Echo Top
+'Echo Top' = {
+	discipline = 0;
+	parameterCategory = 16;
+	parameterNumber = 3;
+}
+
+#Echo Top
+'Echo Top' = {
+	discipline = 0;
+	parameterCategory = 16;
+	parameterNumber = 3;
+}
+
+#Hourly Maximum of Simulated Reflectivity at 1 km AGL
+'Hourly Maximum of Simulated Reflectivity at 1 km AGL' = {
+	discipline = 0;
+	parameterCategory = 16;
+	parameterNumber = 198;
+}

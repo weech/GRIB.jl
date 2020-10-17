@@ -131,7 +131,7 @@ function __init__()
 
     # Let library know where its own shared data is
     share = joinpath(dirname(eccodes_jll.eccodes_path), "..", "share", "eccodes")
-    ENV["ECCODES_DEFINITION_PATH"] = joinpath(share, "definitions")
+    ENV["ECCODES_DEFINITION_PATH"] = joinpath(Base.@__DIR__, "..", "definitions") * ":" * joinpath(share, "definitions")
     ENV["ECCODES_SAMPLES_PATH"] = joinpath(share, "samples")
 
     # Turn on multi-field support by default for straightforward use of NCEP files

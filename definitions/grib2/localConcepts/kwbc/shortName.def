@@ -1,0 +1,21 @@
+
+#Echo Top
+'retop' = {
+	discipline = 0;
+	parameterCategory = 16;
+	parameterNumber = 3;
+}
+
+#Echo Top
+'retop' = {
+	discipline = 0;
+	parameterCategory = 16;
+	parameterNumber = 197;
+}
+
+#Hourly Maximum of Simulated Reflectivity at 1 km AGL
+'maxref' = {
+	discipline = 0;
+	parameterCategory = 16;
+	parameterNumber = 198;
+}
