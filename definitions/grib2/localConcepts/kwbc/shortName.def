@@ -138,8 +138,8 @@
     parameterNumber = 200;
 }
 
-#Reserved for Local Use
-'' = {
+#Lightning
+'ltng' = {
     discipline = 0;
     parameterCategory = 17;
     parameterNumber = 192;

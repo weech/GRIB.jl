@@ -138,7 +138,7 @@
     parameterNumber = 200;
 }
 
-#Reserved for Local Use
+#Lightning
 '70017192' = {
     discipline = 0;
     parameterCategory = 17;
