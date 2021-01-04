@@ -1,14 +1,14 @@
 name = "GRIB"
 uuid = "b16dfd50-4035-11e9-28d4-9dfe17e6779b"
 authors = ["Alex Weech <aweech340@gmail.com>"]
-version = "0.2.1"
+version = "0.3.0"
 
 [deps]
 eccodes_jll = "b04048ba-5ccd-5610-b3f6-85129a548705"
 
 [extras]
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
 test = ["Test", "Statistics"]

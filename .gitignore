@@ -2,3 +2,5 @@
 *.log
 *.cov
 /test/samples/modified_latlon_surface.grib2
+Manifest.toml
+

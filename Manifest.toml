@@ -1,5 +1,11 @@
 # This file is machine-generated - editing it directly is not advised
 
+[[Artifacts]]
+deps = ["Pkg"]
+git-tree-sha1 = "c30985d8821e0cd73870b17b0ed0ce6dc44cb744"
+uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
+version = "1.3.0"
+
 [[Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
@@ -11,11 +17,16 @@ uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
+[[JLLWrappers]]
+git-tree-sha1 = "04b49c556240b62d5a799e94c63d5fc14d3c07cd"
+uuid = "692b3bcd-3c85-4b1f-b108-f13ce0eb3210"
+version = "1.1.4"
+
 [[JpegTurbo_jll]]
-deps = ["Libdl", "Pkg"]
-git-tree-sha1 = "a53414ab7217ae6cc34e41c453339e17a873d169"
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "9aff0587d9603ea0de2c6f6300d9f9492bbefbd3"
 uuid = "aacddb02-875f-59d6-b918-886e6ef4fbf8"
-version = "2.0.1+1"
+version = "2.0.1+3"
 
 [[LibGit2]]
 deps = ["Printf"]
@@ -25,10 +36,10 @@ uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 
 [[Libtiff_jll]]
-deps = ["JpegTurbo_jll", "Libdl", "Pkg", "Zlib_jll", "Zstd_jll"]
-git-tree-sha1 = "1fe8c3608dfe7bdec81d018de1cc66e959016e8c"
+deps = ["Artifacts", "JLLWrappers", "JpegTurbo_jll", "Libdl", "Pkg", "Zlib_jll", "Zstd_jll"]
+git-tree-sha1 = "291dd857901f94d683973cdf679984cdf73b56d0"
 uuid = "89763e89-9b03-5906-acba-b20f662cd828"
-version = "4.1.0+0"
+version = "4.1.0+2"
 
 [[LittleCMS_jll]]
 deps = ["JpegTurbo_jll", "Libdl", "Libtiff_jll", "Pkg"]
@@ -82,25 +93,25 @@ uuid = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
 uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
 
 [[Zlib_jll]]
-deps = ["Libdl", "Pkg"]
-git-tree-sha1 = "622d8b6dc0c7e8029f17127703de9819134d1b71"
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "320228915c8debb12cb434c59057290f0834dbf6"
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
-version = "1.2.11+14"
+version = "1.2.11+18"
 
 [[Zstd_jll]]
-deps = ["Libdl", "Pkg"]
-git-tree-sha1 = "b25b0fb10176c42e9a5a20e1f40d570ac0288d4e"
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "6f1abcb0c44f184690912aa4b0ba861dd64f11b9"
 uuid = "3161d3a3-bdf6-5164-811a-617609db77b4"
-version = "1.4.5+0"
+version = "1.4.5+2"
 
 [[eccodes_jll]]
-deps = ["Libdl", "OpenJpeg_jll", "Pkg", "libpng_jll"]
-git-tree-sha1 = "a85758fcea39f6d41e7cbd8ae0ac74a5819f9d67"
+deps = ["Artifacts", "JLLWrappers", "Libdl", "OpenJpeg_jll", "Pkg", "libpng_jll"]
+git-tree-sha1 = "e32c8509bcce428851afb9b53e6d7927df300035"
 uuid = "b04048ba-5ccd-5610-b3f6-85129a548705"
-version = "2.18.0+0"
+version = "2.19.1+0"
 
 [[libpng_jll]]
-deps = ["Libdl", "Pkg", "Zlib_jll"]
-git-tree-sha1 = "594cb058723c13941cf463fd09e5859499594f50"
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "Zlib_jll"]
+git-tree-sha1 = "6abbc424248097d69c0c87ba50fcb0753f93e0ee"
 uuid = "b53b4c65-9356-5827-b1ea-8c7a1a84506f"
-version = "1.6.37+3"
+version = "1.6.37+6"

@@ -84,7 +84,7 @@ end
 
 Find the nearest point to each point given.
 
-Setting lsm to true finds the nearest land point and only works when `handle`
+Setting islsm to true finds the nearest land point and only works when `handle`
 represents a land-sea-mask. Distance is in kilometers.
 
 # Example

@@ -209,9 +209,9 @@ function Base.getindex(handle::Message, key::AbstractString)
                        (Ptr{codes_handle}, Cstring, Ref{Cdouble}, Ref{Csize_t}),
                         handle.ptr, key, vals, lenref)
             errorcheck(err)
-            if key == "values"
-                nj = handle["Nj"]
+            if key == "values" && handle["Ni"] != (2^31 - 1)
                 ni = handle["Ni"]
+                nj = handle["Nj"]
                 columnmajor = handle["jPointsAreConsecutive"] != 0
                 if columnmajor
                     return reshape(vals, nj, ni)
