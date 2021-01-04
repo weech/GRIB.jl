@@ -338,7 +338,7 @@ GribFile(filename) do f
 end
 ```
 """
-function data(handle::Message)::Tuple{Array{Float64, 2}, Array{Float64, 2}, Array{Float64, 2}}
+function data(handle::Message)
     # Allocate arrays
     npoints = handle["numberOfPoints"]
     lons = Vector{Float64}(undef, npoints)
@@ -349,13 +349,17 @@ function data(handle::Message)::Tuple{Array{Float64, 2}, Array{Float64, 2}, Arra
                 handle.ptr, lats, lons, values)
     errorcheck(err)
 
-    nj = handle["Nj"]
     ni = handle["Ni"]
-    columnmajor = handle["jPointsAreConsecutive"] != 0
-    if columnmajor
-        return reshape(lons, nj, ni), reshape(lats, nj, ni), reshape(values, nj, ni)
-    else
-        return reshape(lons, ni, nj), reshape(lats, ni, nj), reshape(values, ni, nj)
+    if ni != (2^31 - 1)
+        nj = handle["Nj"]
+        columnmajor = handle["jPointsAreConsecutive"] != 0
+        if columnmajor
+            return reshape(lons, nj, ni), reshape(lats, nj, ni), reshape(values, nj, ni)
+        else
+            return reshape(lons, ni, nj), reshape(lats, ni, nj), reshape(values, ni, nj)
+        end
+    else 
+        lons, lats, values
     end
 end
 
