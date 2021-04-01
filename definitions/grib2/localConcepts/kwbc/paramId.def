@@ -1,29 +1,36 @@
-#Echo Top
-'70016003' = {
+#Total Precipitation
+'70001008' = {
     discipline = 0;
-    parameterCategory = 16;
-    parameterNumber = 3;
+    parameterCategory = 1;
+    parameterNumber = 8;
 }
 
-#Hourly Maximum of Simulated Reflectivity at 1 km AGL
-'70016198' = {
+#Total Column Integrate Graupel
+'70001074' = {
     discipline = 0;
-    parameterCategory = 16;
-    parameterNumber = 198;
+    parameterCategory = 1;
+    parameterNumber = 74;
 }
 
-#Composite reflectivity
-'70016196' = {
+#Freezing Rain
+'70001225' = {
     discipline = 0;
-    parameterCategory = 16;
-    parameterNumber = 196;
+    parameterCategory = 1;
+    parameterNumber = 225;
 }
 
-#Reflectivity
-'70016195' = {
+#Frozen Rain
+'70001227' = {
     discipline = 0;
-    parameterCategory = 16;
-    parameterNumber = 195;
+    parameterCategory = 1;
+    parameterNumber = 227;
+}
+
+#Relative Humidity with Respect to Precipitable Water
+'70001242' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 242;
 }
 
 #Hourly Maximum of Upward Vertical Velocity  in the lowest 400hPa
@@ -54,18 +61,39 @@
     parameterNumber = 223;
 }
 
-#Hourly Maximum of Updraft Helicity over Layer 2km to 5 km AGL
-'70007199' = {
+#MSLP (MAPS System Reduction)
+'70003198' = {
     discipline = 0;
-    parameterCategory = 7;
-    parameterNumber = 199;
+    parameterCategory = 3;
+    parameterNumber = 198;
 }
 
-#Hourly Minimum of Updraft Helicity
-'70007200' = {
+#Pressure of level from which parcel was lifted
+'70003200' = {
     discipline = 0;
-    parameterCategory = 7;
+    parameterCategory = 3;
     parameterNumber = 200;
+}
+
+#Visible Beam Downward Solar Flux
+'70004200' = {
+    discipline = 0;
+    parameterCategory = 4;
+    parameterNumber = 200;
+}
+
+#Visible Diffuse Downward Solar Flux
+'70004201' = {
+    discipline = 0;
+    parameterCategory = 4;
+    parameterNumber = 201;
+}
+
+#Total Cloud Cover
+'70006001' = {
+    discipline = 0;
+    parameterCategory = 6;
+    parameterNumber = 1;
 }
 
 #Convective Available Potential Energy
@@ -89,53 +117,46 @@
     parameterNumber = 193;
 }
 
-#Total Column Integrate Graupel
-'70001074' = {
+#Hourly Maximum of Updraft Helicity over Layer 2km to 5 km AGL
+'70007199' = {
     discipline = 0;
-    parameterCategory = 1;
-    parameterNumber = 74;
+    parameterCategory = 7;
+    parameterNumber = 199;
 }
 
-#Frozen Rain
-'70001227' = {
+#Hourly Minimum of Updraft Helicity
+'70007200' = {
     discipline = 0;
-    parameterCategory = 1;
-    parameterNumber = 227;
-}
-
-#Relative Humidity with Respect to Precipitable Water
-'70001242' = {
-    discipline = 0;
-    parameterCategory = 1;
-    parameterNumber = 242;
-}
-
-#Total Precipitation
-'70001008' = {
-    discipline = 0;
-    parameterCategory = 1;
-    parameterNumber = 8;
-}
-
-#Freezing Rain
-'70001225' = {
-    discipline = 0;
-    parameterCategory = 1;
-    parameterNumber = 225;
-}
-
-#MSLP (MAPS System Reduction)
-'70003198' = {
-    discipline = 0;
-    parameterCategory = 3;
-    parameterNumber = 198;
-}
-
-#Pressure of level from which parcel was lifted
-'70003200' = {
-    discipline = 0;
-    parameterCategory = 3;
+    parameterCategory = 7;
     parameterNumber = 200;
+}
+
+#Echo Top
+'70016003' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 3;
+}
+
+#Reflectivity
+'70016195' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 195;
+}
+
+#Composite reflectivity
+'70016196' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 196;
+}
+
+#Hourly Maximum of Simulated Reflectivity at 1 km AGL
+'70016198' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 198;
 }
 
 #Lightning
@@ -145,25 +166,11 @@
     parameterNumber = 192;
 }
 
-#Total Cloud Cover
-'70006001' = {
-    discipline = 0;
-    parameterCategory = 6;
-    parameterNumber = 1;
-}
-
-#Visible Beam Downward Solar Flux
-'70004200' = {
-    discipline = 0;
-    parameterCategory = 4;
-    parameterNumber = 200;
-}
-
-#Visible Diffuse Downward Solar Flux
-'70004201' = {
-    discipline = 0;
-    parameterCategory = 4;
-    parameterNumber = 201;
+#Moisture Availability
+'72000194' = {
+    discipline = 2;
+    parameterCategory = 0;
+    parameterNumber = 194;
 }
 
 #Simulated Brightness Temperature for GOES 12, Channel 3
@@ -193,11 +200,3 @@
     parameterCategory = 192;
     parameterNumber = 8;
 }
-
-#Moisture Availability
-'72000194' = {
-    discipline = 2;
-    parameterCategory = 0;
-    parameterNumber = 194;
-}
-

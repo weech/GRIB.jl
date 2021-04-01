@@ -1,29 +1,36 @@
-#Echo Top
-'m' = {
+#Total Precipitation
+'kg m**-2' = {
     discipline = 0;
-    parameterCategory = 16;
-    parameterNumber = 3;
+    parameterCategory = 1;
+    parameterNumber = 8;
 }
 
-#Hourly Maximum of Simulated Reflectivity at 1 km AGL
-'dB' = {
+#Total Column Integrate Graupel
+'kg m**-2' = {
     discipline = 0;
-    parameterCategory = 16;
-    parameterNumber = 198;
+    parameterCategory = 1;
+    parameterNumber = 74;
 }
 
-#Composite reflectivity
-'dB' = {
+#Freezing Rain
+'kg m**-2' = {
     discipline = 0;
-    parameterCategory = 16;
-    parameterNumber = 196;
+    parameterCategory = 1;
+    parameterNumber = 225;
 }
 
-#Reflectivity
-'dB' = {
+#Frozen Rain
+'kg m**-2' = {
     discipline = 0;
-    parameterCategory = 16;
-    parameterNumber = 195;
+    parameterCategory = 1;
+    parameterNumber = 227;
+}
+
+#Relative Humidity with Respect to Precipitable Water
+'%' = {
+    discipline = 0;
+    parameterCategory = 1;
+    parameterNumber = 242;
 }
 
 #Hourly Maximum of Upward Vertical Velocity  in the lowest 400hPa
@@ -54,18 +61,39 @@
     parameterNumber = 223;
 }
 
-#Hourly Maximum of Updraft Helicity over Layer 2km to 5 km AGL
-'m**2 s**-2' = {
+#MSLP (MAPS System Reduction)
+'Pa' = {
     discipline = 0;
-    parameterCategory = 7;
-    parameterNumber = 199;
+    parameterCategory = 3;
+    parameterNumber = 198;
 }
 
-#Hourly Minimum of Updraft Helicity
-'m**2 s**-2' = {
+#Pressure of level from which parcel was lifted
+'Pa' = {
     discipline = 0;
-    parameterCategory = 7;
+    parameterCategory = 3;
     parameterNumber = 200;
+}
+
+#Visible Beam Downward Solar Flux
+'W m**-2' = {
+    discipline = 0;
+    parameterCategory = 4;
+    parameterNumber = 200;
+}
+
+#Visible Diffuse Downward Solar Flux
+'W m**-2' = {
+    discipline = 0;
+    parameterCategory = 4;
+    parameterNumber = 201;
+}
+
+#Total Cloud Cover
+'%' = {
+    discipline = 0;
+    parameterCategory = 6;
+    parameterNumber = 1;
 }
 
 #Convective Available Potential Energy
@@ -89,53 +117,46 @@
     parameterNumber = 193;
 }
 
-#Total Column Integrate Graupel
-'kg m**-2' = {
+#Hourly Maximum of Updraft Helicity over Layer 2km to 5 km AGL
+'m**2 s**-2' = {
     discipline = 0;
-    parameterCategory = 1;
-    parameterNumber = 74;
+    parameterCategory = 7;
+    parameterNumber = 199;
 }
 
-#Frozen Rain
-'kg m**-2' = {
+#Hourly Minimum of Updraft Helicity
+'m**2 s**-2' = {
     discipline = 0;
-    parameterCategory = 1;
-    parameterNumber = 227;
-}
-
-#Relative Humidity with Respect to Precipitable Water
-'%' = {
-    discipline = 0;
-    parameterCategory = 1;
-    parameterNumber = 242;
-}
-
-#Total Precipitation
-'kg m**-2' = {
-    discipline = 0;
-    parameterCategory = 1;
-    parameterNumber = 8;
-}
-
-#Freezing Rain
-'kg m**-2' = {
-    discipline = 0;
-    parameterCategory = 1;
-    parameterNumber = 225;
-}
-
-#MSLP (MAPS System Reduction)
-'Pa' = {
-    discipline = 0;
-    parameterCategory = 3;
-    parameterNumber = 198;
-}
-
-#Pressure of level from which parcel was lifted
-'Pa' = {
-    discipline = 0;
-    parameterCategory = 3;
+    parameterCategory = 7;
     parameterNumber = 200;
+}
+
+#Echo Top
+'m' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 3;
+}
+
+#Reflectivity
+'dB' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 195;
+}
+
+#Composite reflectivity
+'dB' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 196;
+}
+
+#Hourly Maximum of Simulated Reflectivity at 1 km AGL
+'dB' = {
+    discipline = 0;
+    parameterCategory = 16;
+    parameterNumber = 198;
 }
 
 #Lightning
@@ -145,25 +166,11 @@
     parameterNumber = 192;
 }
 
-#Total Cloud Cover
+#Moisture Availability
 '%' = {
-    discipline = 0;
-    parameterCategory = 6;
-    parameterNumber = 1;
-}
-
-#Visible Beam Downward Solar Flux
-'W m**-2' = {
-    discipline = 0;
-    parameterCategory = 4;
-    parameterNumber = 200;
-}
-
-#Visible Diffuse Downward Solar Flux
-'W m**-2' = {
-    discipline = 0;
-    parameterCategory = 4;
-    parameterNumber = 201;
+    discipline = 2;
+    parameterCategory = 0;
+    parameterNumber = 194;
 }
 
 #Simulated Brightness Temperature for GOES 12, Channel 3
@@ -193,11 +200,3 @@
     parameterCategory = 192;
     parameterNumber = 8;
 }
-
-#Moisture Availability
-'%' = {
-    discipline = 2;
-    parameterCategory = 0;
-    parameterNumber = 194;
-}
-
