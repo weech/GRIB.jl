@@ -1,6 +1,8 @@
 # GRIB.jl
 
-[![Build Status](https://github.com/weech/GRIB.jl/workflows/CI/badge.svg)](https://github.com/weech/GRIB.jl/actions?query=workflow%3ACI)
+| **Documentation**                                                               | **Build Status**                                                                                |
+|:-------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------:|
+| [![][docs-dev-img]][docs-dev-url] | [![][ci-img]][ci-url]
 
 The Gridded Binary (GRIB) format is a format commonly used in meteorology. A GRIB file is a
 collection of independent records that store 2D data. This package is an interface to the ECMWF
@@ -140,4 +142,11 @@ has
 * Add examples
 * Fix the bug in `eachpoint` that occasionally causes Julia to segfault (probably something with
   the GC).
+
+[docs-dev-img]: https://img.shields.io/badge/docs-dev-blue.svg
+[docs-dev-url]: https://weech.github.io/GRIB.jl/dev
+
+[ci-img]: https://github.com/weech/GRIB.jl/workflows/CI/badge.svg
+[ci-url]: https://github.com/weech/GRIB.jl/actions?query=workflow%3ACI
+
 
