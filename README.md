@@ -1,5 +1,7 @@
 # GRIB.jl
 
+[![Build Status](https://github.com/weech/GRIB.jl/workflows/CI/badge.svg)](https://github.com/weech/GRIB.jl/actions?query=workflow%3ACI)
+
 The Gridded Binary (GRIB) format is a format commonly used in meteorology. A GRIB file is a
 collection of independent records that store 2D data. This package is an interface to the ECMWF
 [ecCodes](https://confluence.ecmwf.int/display/ECC/ecCodes+Home) library. In ecCodes, each
