@@ -17,7 +17,7 @@ mutable struct GribFile
 end
 
 """
-    `GribFile(filename::AbstractString, mode="r")`
+    GribFile(filename::AbstractString, mode="r")
 Open a grib file. `mode` is a mode as described by `Base.open`.
 """
 function GribFile(filename::AbstractString; mode="r")
@@ -35,7 +35,7 @@ function GribFile(filename::AbstractString; mode="r")
 end
 
 """
-    `GribFile(f::Function, filename::AbstractString, mode="r")`
+    GribFile(f::Function, filename::AbstractString, mode="r")
 Open a grib file and automatically close after exucuting `f`.
 `mode` is a mode as described by `Base.open`.
 
@@ -57,10 +57,10 @@ end
 
 function Base.iterate(f::GribFile, state=())
     next = Message(f)
-    if next == nothing
-        return nothing
+    if isnothing(next)
+        nothing
     else
-        return (next, ())
+        (next, ())
     end
 end
 
@@ -86,7 +86,7 @@ function readnoreturn(f::GribFile, nm::Integer)
 end
 
 """
-    `read(f::GribFile[, nm::Integer])`
+    read(f::GribFile[, nm::Integer])
 
 Read `nm` messages from `f` and return as vector. Default is 1.
 """
@@ -98,19 +98,19 @@ function Base.read(f::GribFile, nm::Integer)
     for i in 1:nm
         ret[i] = Message(f)
     end
-    return ret
+    ret
 end
 Base.read(f::GribFile) = Message(f)
 
 """
-    `position(f::GribFile)`
+    position(f::GribFile)
 
 Get the current position of the file.
 """
 Base.position(f::GribFile) = f.pos
 
 """
-    `seek(f::GribFile, n::Integer)`
+    seek(f::GribFile, n::Integer)
 
 Seek the file to the given position `n`
 """
@@ -127,7 +127,7 @@ function Base.seek(f::GribFile, n::Integer)
 end
 
 """
-    `skip(f::GribFile, offset::Integer)`
+    skip(f::GribFile, offset::Integer)
 
 Seek the file relative to the current position
 """
@@ -145,7 +145,7 @@ function Base.skip(f::GribFile, offset::Integer)
 end
 
 """
-    `destroy(f::GribFile)`
+    destroy(f::GribFile)
 Safely close the file.
 """
 function destroy(f::GribFile)
