@@ -26,6 +26,8 @@ GribFile(::AbstractString)
 
 GribFile(::Function, ::AbstractString)
 
+Base.filter
+
 Base.read
 
 Base.position

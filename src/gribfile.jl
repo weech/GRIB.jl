@@ -64,6 +64,21 @@ function Base.iterate(f::GribFile, state=())
     end
 end
 
+"""
+    filter(func, gfile)
+
+Return a vector of messages in `gfile` where `func` returns `true`
+"""
+function Base.filter(func, gfile::GribFile)
+    output = Message[]
+    for msg in gfile 
+        if func(msg)
+            push!(output, msg)
+        end
+    end
+    output
+end
+
 Base.eltype(f::GribFile) = Message
 
 Base.IteratorSize(f::GribFile) = Base.SizeUnknown()
