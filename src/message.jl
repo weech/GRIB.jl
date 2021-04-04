@@ -384,15 +384,7 @@ function Base.show(io::IO, mime::MIME"text/plain", message::Message)
 end
 
 # So it pretty-prints for arrays
-function Base.show(io::IO, message::Message)
-    dispkeys = ["date", "gridType", "stepRange", "typeOfLevel", "level",
-                 "shortName", "name"]
-    dispkeys = [k for k in dispkeys if haskey(message, k)]
-    offsets = [9, 15, 10, 18, 6, 10, 4]
-    line1 = strip(join([rpad(k, offsets[i]) for (i, k) in enumerate(dispkeys)])) * "\n"
-    line2 = strip(join([rpad(message[k], offsets[i]) for (i, k) in enumerate(dispkeys)]))
-    write(io, line1 * line2)
-end
+Base.show(io::IO, message::Message) = show(io, MIME("text/plain"), message)
 
 function Base.print(io::IO, message::Message)
     bytes = getbytes(message)
