@@ -115,7 +115,7 @@ function main()
         throw(cfsname)
     end
 
-    # Open the file. Since we're only opening one, there's no harm in doing it this way
+    # Open the file
     grib = GRIB.GribFile(cfsfname)
 
     # Filter for the messages we want (500 hPa Z, T, U, and V)
@@ -205,6 +205,11 @@ function main()
     PyPlot.ylim(20, 60)
     PyPlot.colorbar(fills)
     PyPlot.savefig("output.png")
+
+    # Safely close the file. It's not super important here because it'd be closed at the end of the process 
+    #   but it is best practice.
+    destroy(grib)
+
 end
 #main() # Commented this out because precompilation runs it lol
 
