@@ -5,9 +5,9 @@ version = "0.1.0"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
-Downloads = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
 GRIB = "b16dfd50-4035-11e9-28d4-9dfe17e6779b"
 GeoInterface = "cf35fbd7-0cd7-5166-be24-54bfbe79505f"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 Proj4 = "9a7e659c-8ee8-5706-894e-f68f43bc57ea"
 PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
 Shapefile = "8e980c4a-a4fe-5da2-b3a7-4b4b0353a2f4"

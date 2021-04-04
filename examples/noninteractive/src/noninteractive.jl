@@ -3,9 +3,9 @@ module noninteractive
 export main
 
 import Dates
-import Downloads
 import GeoInterface: coordinates
 import GRIB
+import HTTP
 import Proj4
 import PyPlot
 import Shapefile
@@ -19,8 +19,13 @@ Fetch a Shapefile.Table of the zip file located at `layerurl`
 function fetch_natural_earth(layerurl)
     # In a real workflow, you'd have Natural Earth saved somewhere
     #   and load it in, rather than getting from the website every time
-    ziptemp = Downloads.download(layerurl)
-    reader = ZipFile.Reader(ziptemp)
+    name = tempname()
+    HTTP.open("GET", layerurl) do req
+        open(name, "w") do io 
+            write(io, req)
+        end
+    end
+    reader = ZipFile.Reader(name)
     tempdir = mktempdir()
     for file in reader.files 
         open(joinpath(tempdir, file.name), "w") do io 
@@ -51,7 +56,13 @@ function fetch_cfs(time)
     center = Dates.format(time, "yyyy/yyyymm/yyyymmdd/")
     full = "$(base)$(center)cdas1.t$(Dates.hour(time))z$(tail)"
     # Be aware that this is a large file (~80 MB)
-    Downloads.download(full)
+    name = tempname()
+    HTTP.open("GET", full) do req 
+        open(name, "w") do io 
+            write(io, req)
+        end
+    end
+    name
 end
 
 """
@@ -90,8 +101,7 @@ mps_to_kt(x) = x * 60. * 60. / 1852.
 function main()
     # Download data and wait on CFS
     cfstime = Dates.DateTime(2013, 2, 9, 12)
-    # A bug in Download.downloads means we can't put it in another thread
-    cfsfut = @async fetch_cfs(cfstime) 
+    cfsfut = Threads.@spawn fetch_cfs(cfstime) 
     statesfut = Threads.@spawn fetch_natural_earth("https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_1_states_provinces_lakes.zip")
     countriesfut = Threads.@spawn fetch_natural_earth("https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/cultural/ne_50m_admin_0_countries_lakes.zip")
 
@@ -109,9 +119,9 @@ function main()
     grib = GRIB.GribFile(cfsfname)
 
     # Filter for the messages we want (500 hPa Z, T, U, and V)
-    wanted = filter(grib) do msg
+    wanted = collect(Iterators.filter(grib) do msg
         msg["level"] == 500 && msg["shortName"] ∈ ["t", "gh", "u", "v"]
-    end
+    end)
 
     # We don't know their order, but we can use filter to disambiguate them
     # Spawn a thread to uncompress the values as we go because that takes a while
@@ -196,6 +206,6 @@ function main()
     PyPlot.colorbar(fills)
     PyPlot.savefig("output.png")
 end
-main()
+#main() # Commented this out because precompilation runs it lol
 
 end # module
