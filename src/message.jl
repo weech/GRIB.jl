@@ -25,11 +25,9 @@ function Message(index::Index)::Union{Message, Nothing}
         throw(ErrorException("Error: $(errors[-eref[]+1])"))
     end
     if ptr == C_NULL || eref[] == CODES_END_OF_INDEX
-        return nothing
+        nothing
     else
-        m = Message(ptr)
-        finalizer(destroy, m)
-        return m
+        finalizer(destroy, Message(ptr))
     end
 end
 
@@ -41,11 +39,9 @@ function Message(file::GribFile)::Union{Message, Nothing}
     file.pos += 1
     errorcheck(eref[])
     if ptr == C_NULL
-        return nothing
+        nothing
     else
-        m = Message(ptr)
-        finalizer(destroy, m)
-        return m
+        finalizer(destroy, Message(ptr))
     end
 end
 
@@ -64,9 +60,7 @@ function Message(raw::Vector{UInt8})
     if ptr == C_NULL
         throw(ErrorException("Invalid message, could not create Message"))
     end
-    m = Message(ptr)
-    finalizer(destroy, m)
-    return m
+    finalizer(destroy, Message(ptr))
 end
 
 function Message(messages::Vector{Vector{UInt8}})
@@ -76,9 +70,7 @@ function Message(messages::Vector{Vector{UInt8}})
                 (Ptr{codes_context}, Ptr{Ptr{UInt8}}, Ptr{Csize_t}, Ptr{Cint}),
                 C_NULL, messages, sizes, eref)
     errorcheck(eref[])
-    m = Message(ptr)
-    finalizer(destroy, m)
-    return m
+    finalizer(destroy, Message(ptr))
 end
 
 """
@@ -93,7 +85,7 @@ function getbytes(message::Message)
                 (Ptr{codes_handle}, Ptr{Ptr{UInt8}}, Ref{Csize_t}),
                 message.ptr, vp, lenref)
     errorcheck(err)
-    return unsafe_wrap(Vector{UInt8}, vp[], lenref[])
+    unsafe_wrap(Vector{UInt8}, vp[], lenref[])
 end
 
 """
@@ -112,9 +104,9 @@ end
 function Base.haskey(msg::Message, key::AbstractString)
     try
         msg[key]
-        return true
+        true
     catch e
-        return false
+        false
     end
 end
 
@@ -125,9 +117,9 @@ Return the missing value of the message. If one isn't included returns 1e30.
 """
 function missingvalue(msg::Message)
     if haskey(msg, "missingValue")
-        return msg["missingValue"]
+        msg["missingValue"]
     else
-        return 1e30
+        1e30 # Why do we do this? Could we use nothing?
     end
 end
 
@@ -143,7 +135,7 @@ function maskedvalues(msg::Message)
     for i in eachindex(vals)
         @inbounds masked[i] = vals[i] == missingval ? missing : vals[i]
     end
-    return masked
+    masked
 end
 
 """ Get the native type of a key. """
@@ -154,19 +146,18 @@ function getnativetype(handle::Message, key::AbstractString)::DataType
     errorcheck(err)
     typeint = typeref[]
 
-
     if typeint == CODES_TYPE_LONG
-        return Clong
+        Clong
     elseif typeint == CODES_TYPE_STRING
-        return String
+        String
     elseif typeint == CODES_TYPE_DOUBLE
-        return Float64
+        Float64
     elseif typeint == CODES_TYPE_BYTES
-        return Vector{UInt8}
+        Vector{UInt8}
     elseif typeint == CODES_TYPE_MISSING
-        return Missing
+        Missing
     else
-        return Tuple{}
+        Tuple{}
     end
 end
 
@@ -176,7 +167,7 @@ function getsize(message::Message, key::AbstractString)
     err = ccall((:codes_get_size, eccodes), Cint, (Ptr{codes_handle}, Cstring, Ref{Csize_t}),
                  message.ptr, key, lenref)
     errorcheck(err)
-    return lenref[]
+    lenref[]
 end
 
 """ Get the value of a key. """
@@ -313,11 +304,9 @@ end
 function clone(handle::Message)::Union{Message, Nothing}
     ptr = ccall((:codes_handle_clone, eccodes), Ptr{codes_handle}, (Ptr{codes_handle},), handle.ptr)
     if ptr == C_NULL
-        return nothing
+        nothing
     else
-        m = Message(ptr)
-        finalizer(destroy, m)
-        return m
+        finalizer(destroy, Message(ptr))
     end
 end
 
@@ -367,7 +356,7 @@ end
 function destroy(handle::Message)
     if handle.ptr != C_NULL
         err = ccall((:codes_handle_delete, eccodes), Cint, (Ptr{codes_handle},), handle.ptr)
-        errorcheck(err)
+        #errorcheck(err) Calling this throws, which is not allowed in finalizers
         handle.ptr == C_NULL
     end
 end

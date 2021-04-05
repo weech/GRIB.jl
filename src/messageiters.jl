@@ -44,20 +44,20 @@ end
 
 function Base.iterate(iter::EachValue, state=())
     ret = iterate(iter.keyiter)
-    if ret == nothing
-        return nothing
+    if isnothing(ret)
+        nothing
     else
-        return (iter.keyiter.msg[ret[1]], ())
+        (iter.keyiter.msg[ret[1]], ())
     end
 end
 
 function Base.iterate(iter::Message, state=(keys(iter),))
     keyitr = state[1]
     ret = iterate(keyitr)
-    if ret == nothing
-        return nothing
+    if isnothing(ret)
+        nothing
     else
-        return (ret[1] => iter[ret[1]], (keyitr,))
+        (ret[1] => iter[ret[1]], (keyitr,))
     end
 end
 
@@ -78,7 +78,7 @@ end
 function Base.keys(handle::Message)
     ptr = ccall((:codes_keys_iterator_new, eccodes), Ptr{codes_keys_iterator},
           (Ptr{codes_handle}, Culong, Cstring), handle.ptr, CODES_KEYS_ITERATOR_ALL_KEYS, C_NULL)
-    return EachKey(ptr, handle)
+    EachKey(ptr, handle)
 end
 
 """
@@ -95,7 +95,7 @@ end
 """
 function Base.values(handle::Message)
     keyiter = keys(handle)
-    return EachValue(keyiter)
+    EachValue(keyiter)
 end
 
 function destroy(iter::EachKey)
@@ -135,7 +135,7 @@ function eachpoint(handle::Message)
     if ptr == C_NULL
         throw(ErrorException("Could not create GribIterator"))
     end
-    return GribIterator(ptr, handle["numberOfPoints"])
+    GribIterator(ptr, handle["numberOfPoints"])
 end
 
 function Base.iterate(iter::GribIterator, state=())
@@ -150,10 +150,10 @@ function Base.iterate(iter::GribIterator, state=())
                 iter.ptr, latref, lonref, valref)
     if next == 0
         destroy(iter)
-        return nothing
+        nothing
     else
         rets = (lonref[], latref[], valref[])
-        return (rets, ())
+        (rets, ())
     end
 end
 

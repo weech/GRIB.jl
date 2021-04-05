@@ -76,7 +76,7 @@ function find(near::Nearest, handle::Message, inlon, inlat; samepoint=true, same
                 indexes, Ref(len))
     errorcheck(err)
     sorting = sortperm(distances)
-    return outlons[sorting], outlats[sorting], values[sorting], distances[sorting]
+    outlons[sorting], outlats[sorting], values[sorting], distances[sorting]
 end
 
 """
@@ -109,7 +109,7 @@ function findmultiple(handle::Message, inlons::Vector{Float64}, inlats::Vector{F
                 handle.ptr, intlsm, inlats, inlons, npoints, outlats, outlons,
                 outvals, outdists, outidx)
     errorcheck(err)
-    return outlons, outlats, outvals, outdists
+    outlons, outlats, outvals, outdists
 end
 
 """ Safely destroy a nearest object. """

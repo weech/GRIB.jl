@@ -3,6 +3,7 @@ module noninteractive
 export main
 
 import Dates
+import ErrorTypes: Result, Ok, Err, unwrap
 import GeoInterface: coordinates
 import GRIB
 import HTTP
@@ -12,7 +13,7 @@ import Shapefile
 import ZipFile
 
 """
-    fetch_natural_earth(layerurl)
+    fetch_natural_earth(layerurl)::Shapefile.Table
 
 Fetch a Shapefile.Table of the zip file located at `layerurl`
 """
@@ -38,20 +39,20 @@ end
 
 
 """
-    fetch_cfs(time)
+    fetch_cfs(time)::ErrorTypes.Result{String, DomainError}
 
 Downloads the CFS analysis for the given time. Returns the path to a temporary
 file if successful. Returns a DomainError if the time cannot represent a valid
 analysis time (00/06/12/18Z between April 2011 and a few days ago).
 """
-function fetch_cfs(time)
+function fetch_cfs(time)::Result{String, DomainError}
     base = "https://www.ncei.noaa.gov/data/climate-forecast-system/access/operational-analysis/6-hourly-by-pressure/"
     tail = ".pgrbhanl.grib2"
     if Dates.hour(time) ∉ [0, 6, 12, 18]
-        return DomainError(Dates.hour(time), "The hour must be either 0, 6, 12, or 18")
+        return Err(DomainError(Dates.hour(time), "The hour must be either 0, 6, 12, or 18"))
     end
-    if time < Dates.DateTime(2011, 4, 1, 0) || time > Dates.now()
-        return DomainError(time, "The date is outside of the period of record (2011-04 to several days ago)")
+    if time < Dates.DateTime(2011, 4, 1, 0) || time > Dates.now(Dates.UTC)
+        return Err(DomainError(time, "The date is outside of the period of record (2011-04 to several days ago)"))
     end
     center = Dates.format(time, "yyyy/yyyymm/yyyymmdd/")
     full = "$(base)$(center)cdas1.t$(Dates.hour(time))z$(tail)"
@@ -62,7 +63,7 @@ function fetch_cfs(time)
             write(io, req)
         end
     end
-    name
+    Ok(name)
 end
 
 """
@@ -82,10 +83,11 @@ end
     relative_vorticity(u, v, x, y)
 
 Compute the relative vorticity (ζ). It is recommended to have `x` and `y`
-be in a CRS that preserves direction like the Mercator projection.
+be in a CRS that preserves direction like the Mercator projection. Returns
+an `Array` that has the same eltype and shape as `u`.
 """
 function relative_vorticity(u, v, x, y)
-    ζ = zeros(size(u))
+    ζ = zeros(typeof(u), size(u))
     for col in 2:size(ζ, 2)-1, row in 2:size(ζ, 1)-1, 
         ∂v = v[row, col+1] + v[row, col-1] - 2*v[row, col]
         ∂x = (x[row, col+1] - x[row, col-1]) / 2
@@ -96,6 +98,12 @@ function relative_vorticity(u, v, x, y)
     ζ
 end
 
+"""
+    mps_to_kt(x)
+
+Convert `x` from meters per second to knots. The type of the output
+is the type of applying `*` and `/` with x and Float64s.
+"""
 mps_to_kt(x) = x * 60. * 60. / 1852.
 
 function main()
@@ -109,11 +117,8 @@ function main()
     merc = Proj4.Projection(Proj4.epsg[3395]) # Use Mercator because to preserves direction
     wgs84 = Proj4.Projection(Proj4.epsg[4326]) # Input isn't really WGS84 but close enough
 
-    cfsfname = fetch(cfsfut)
     # Just throw errors for this non-operational case
-    if isa(cfsfname, DomainError)
-        throw(cfsname)
-    end
+    cfsfname = unwrap(fetch(cfsfut))
 
     # Open the file
     grib = GRIB.GribFile(cfsfname)

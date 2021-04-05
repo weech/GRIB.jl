@@ -56,6 +56,12 @@ uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 deps = ["ArgTools", "LibCURL", "NetworkOptions"]
 uuid = "f43a241f-c20a-4ad4-852c-f6b1247861c6"
 
+[[ErrorTypes]]
+deps = ["SumTypes"]
+git-tree-sha1 = "bb39f97159bf43bff0d205aad0f6474b226a8ed6"
+uuid = "7f495686-c6d2-4c77-9e8e-e4c865675f9d"
+version = "0.3.0"
+
 [[FixedPointNumbers]]
 deps = ["Statistics"]
 git-tree-sha1 = "335bfdceacc84c5cdf16aadc768aa5ddfc5383cc"
@@ -282,6 +288,12 @@ version = "1.1.0"
 [[Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
 uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+
+[[SumTypes]]
+deps = ["MacroTools"]
+git-tree-sha1 = "81aad7ba31a6c87ad76808378063604413da17b9"
+uuid = "8e1ec7a9-0e02-4297-b0fe-6433085c89f2"
+version = "0.1.2"
 
 [[TOML]]
 deps = ["Dates"]

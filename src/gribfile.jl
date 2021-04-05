@@ -18,6 +18,7 @@ end
 
 """
     GribFile(filename::AbstractString, mode="r")
+
 Open a grib file. `mode` is a mode as described by `Base.open`.
 """
 function GribFile(filename::AbstractString; mode="r")
@@ -31,11 +32,12 @@ function GribFile(filename::AbstractString; mode="r")
                 C_NULL, f, nref)
     errorcheck(err)
 
-    return GribFile(f, filename, mode, 0, nref[])
+    GribFile(f, filename, mode, 0, nref[])
 end
 
 """
     GribFile(f::Function, filename::AbstractString, mode="r")
+
 Open a grib file and automatically close after exucuting `f`.
 `mode` is a mode as described by `Base.open`.
 
@@ -68,10 +70,18 @@ Base.eltype(f::GribFile) = Message
 
 Base.IteratorSize(f::GribFile) = Base.SizeUnknown()
 
+function handle_fopen_errors(ptr, fname)
+    if ptr == C_NULL 
+        # Automatically reads errno
+        throw(SystemError("Failed to open $fname"))
+    end
+end
+
 function Base.seekstart(f::GribFile)
-    newptr = ccall(:fopen, Ptr{File}, (Cstring, Cstring), f.filename, f.mode)
     close(f.ptr)
-    f.ptr = newptr
+    fptr = ccall(:fopen, Ptr{File}, (Cstring, Cstring), f.filename, f.mode)
+    handle_fopen_errors(fptr, f.filename)
+    f.ptr = fptr
     f.pos = 0
 end
 
@@ -132,6 +142,7 @@ end
 Seek the file relative to the current position
 """
 function Base.skip(f::GribFile, offset::Integer)
+    # 0.4 TODO: Should just do it and throw EOFError at end
     if f.pos + offset > f.nmessages
         throw(DomainError("offset is out of range for file length $(f.nmessages)"))
     end
@@ -146,25 +157,28 @@ end
 
 """
     destroy(f::GribFile)
+
 Safely close the file.
 """
 function destroy(f::GribFile)
     err = ccall(:fclose, Cint, (Ptr{File},), f.ptr)
-    if err !=0
-        throw(ErrorException("GribFile closed with errorcode $err"))
+    if err != 0
+        # 0.4 TODO: Change this to SystemError
+        throw(ErrorException("GribFile closed with errorcode $(LibC.errno())"))
     end
 end
 
 function close(f::Ptr{File})
     err = ccall(:fclose, Cint, (Ptr{File},), f)
-    if err !=0
-        throw(ErrorException("GribFile closed with errorcode $err"))
+    if err != 0
+        # 0.4 TODO: Change this to SystemError
+        throw(ErrorException("GribFile closed with errorcode $(LibC.errno())"))
     end
 end
 
 # Functions related to printing
 function Base.show(io::IO, mime::MIME"text/plain", f::GribFile)
     str = "GribFile $(f.filename) at position $(f.pos) in mode $(f.mode)"
-    print(io, str)
+    write(io, str)
 end
 
