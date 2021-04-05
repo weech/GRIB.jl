@@ -16,17 +16,21 @@ mutable struct GribFile
     nmessages::Int32
 end
 
+function handle_fopen_errors(ptr, fname)
+    if ptr == C_NULL 
+        # Automatically reads errno
+        throw(SystemError("Failed to open $fname"))
+    end
+end
+
 """
     GribFile(filename::AbstractString, mode="r")
 
 Open a grib file. `mode` is a mode as described by `Base.open`.
 """
 function GribFile(filename::AbstractString; mode="r")
-    if !isfile(filename)
-        throw(SystemError("opening file $filename: no such file"))
-    end
     f = ccall(:fopen, Ptr{File}, (Cstring, Cstring), filename, mode)
-
+    handle_fopen_errors(f, filename)
     nref = Ref(Int32(0))
     err = ccall((:codes_count_in_file, eccodes), Cint, (Ptr{codes_context}, Ptr{File}, Ref{Cint}),
                 C_NULL, f, nref)
@@ -69,13 +73,6 @@ end
 Base.eltype(::Type{GribFile}) = Message
 
 Base.IteratorSize(::Type{GribFile}) = Base.SizeUnknown()
-
-function handle_fopen_errors(ptr, fname)
-    if ptr == C_NULL 
-        # Automatically reads errno
-        throw(SystemError("Failed to open $fname"))
-    end
-end
 
 function Base.seekstart(f::GribFile)
     close(f.ptr)
@@ -125,6 +122,8 @@ Base.position(f::GribFile) = f.pos
 Seek the file to the given position `n`
 """
 function Base.seek(f::GribFile, n::Integer)
+    # TODO: Base happily seeks past the end and returns an 
+    #   empty array when reading beyond the end
     if n < 0 || n > f.nmessages
         throw(DomainError("n is out of range for file length $(f.nmessages)"))
     end
@@ -142,7 +141,6 @@ end
 Seek the file relative to the current position
 """
 function Base.skip(f::GribFile, offset::Integer)
-    # 0.4 TODO: Should just do it and throw EOFError at end
     if f.pos + offset > f.nmessages
         throw(DomainError("offset is out of range for file length $(f.nmessages)"))
     end

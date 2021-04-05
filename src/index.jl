@@ -23,7 +23,7 @@ function Index(filename::String, keys...)::Index
                 C_NULL, filename, strkeys, eref)
     errorcheck(eref[])
     arrkeys = [k for k in keys]
-    return Index(ptr, arrkeys)
+    Index(ptr, arrkeys)
 end
 
 """
@@ -49,6 +49,7 @@ end
 
 """
     addfile!(index::Index, filename::AbstractString)
+
 Index the file at `filename` using `index`.
 """
 function addfile!(index::Index, filename::AbstractString)
@@ -59,6 +60,7 @@ end
 
 """
     keycount(index::Index, key::AbstractString)
+
 Get the number of distinct values of the key contained in the index.
 """
 function keycount(index::Index, key::AbstractString)
@@ -66,7 +68,7 @@ function keycount(index::Index, key::AbstractString)
     err = ccall((:codes_index_get_size, eccodes), Cint,
                 (Ptr{codes_index}, Cstring, Ref{Csize_t}), index.ptr, key, refsize)
     errorcheck(err)
-    return refsize[]
+    refsize[]
 end
 
 """
@@ -110,10 +112,10 @@ end
 """ Iterate through the messages in the index. """
 function Base.iterate(f::Index, state=())
     next = Message(f)
-    if next == nothing
-        return nothing
+    if isnothing(next)
+        nothing
     else
-        return (next, ())
+        (next, ())
     end
 end
 
@@ -127,5 +129,5 @@ end
 # Functions related to printing
 function Base.show(io::IO, mime::MIME"text/plain", index::Index)
     str = "Index with keys [$(join(index.keys, ", "))]"
-    print(io, str)
+    show(io, str)
 end
