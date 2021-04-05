@@ -36,7 +36,13 @@ function Base.iterate(iter::EachKey, state=())
     end
 end
 
-Base.IteratorSize(iter::EachKey) = Base.SizeUnknown()
+Base.IteratorSize(::Type{EachKey}) = Base.SizeUnknown()
+Base.eltype(::Type{EachKey}) = String
+
+function destroy(iter::EachKey)
+    err = ccall((:codes_keys_iterator_delete, eccodes), Cint, (Ptr{codes_keys_iterator},), iter.ptr)
+    errorcheck(err)
+end
 
 struct EachValue
     keyiter::EachKey
@@ -51,6 +57,8 @@ function Base.iterate(iter::EachValue, state=())
     end
 end
 
+Base.IteratorSize(::Type{EachValue}) = Base.SizeUnknown()
+
 function Base.iterate(iter::Message, state=(keys(iter),))
     keyitr = state[1]
     ret = iterate(keyitr)
@@ -61,7 +69,8 @@ function Base.iterate(iter::Message, state=(keys(iter),))
     end
 end
 
-Base.IteratorSize(iter::EachValue) = Base.SizeUnknown()
+Base.IteratorSize(::Type{Message}) = Base.SizeUnknown()
+Base.eltype(::Type{Message}) = Pair{String, Any}
 
 """
     keys(message::Message)
@@ -97,14 +106,6 @@ function Base.values(handle::Message)
     keyiter = keys(handle)
     EachValue(keyiter)
 end
-
-function destroy(iter::EachKey)
-    err = ccall((:codes_keys_iterator_delete, eccodes), Cint, (Ptr{codes_keys_iterator},), iter.ptr)
-    errorcheck(err)
-end
-
-Base.eltype(iter::EachKey) = String
-Base.eltype(iter::EachValue) = Union{Clong, Float64, String}
 
 mutable struct codes_iterator
 end
@@ -162,5 +163,5 @@ function destroy(iter::GribIterator)
     errorcheck(err)
 end
 
-Base.eltype(iter::GribIterator) = Tuple{Float64, Float64, Float64}
+Base.eltype(::Type{GribIterator}) = Tuple{Float64, Float64, Float64}
 Base.length(iter::GribIterator) = iter.npoints

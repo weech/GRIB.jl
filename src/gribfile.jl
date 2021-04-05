@@ -66,9 +66,9 @@ function Base.iterate(f::GribFile, state=())
     end
 end
 
-Base.eltype(f::GribFile) = Message
+Base.eltype(::Type{GribFile}) = Message
 
-Base.IteratorSize(f::GribFile) = Base.SizeUnknown()
+Base.IteratorSize(::Type{GribFile}) = Base.SizeUnknown()
 
 function handle_fopen_errors(ptr, fname)
     if ptr == C_NULL 
