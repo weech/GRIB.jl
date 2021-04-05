@@ -90,7 +90,19 @@ end
 
 Read `nm` messages from `f` and return as vector. Default is 1.
 """
-Base.read(f::GribFile, nm::Integer) =  collect(Iterators.take(f, nm))
+function Base.read(f::GribFile, nm::Integer) 
+    vec = Vector{Message}(undef, nm)
+    valid_count = 0
+    for i in 1:nm 
+        msg = Message(f)
+        if !isnothing(msg)
+            vec[i] = msg 
+            valid_count += 1
+        end
+    end
+    resize!(vec, valid_count)
+    vec
+end
 # 0.4 TODO: This should return a Vector. Fixing it will be breaking.
 Base.read(f::GribFile) = Message(f)
 

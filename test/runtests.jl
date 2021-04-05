@@ -162,6 +162,8 @@ using Statistics
         @test position(f) == 1
         @test_throws DomainError seek(f, -1)
         @test_throws DomainError skip(f, -15)
+        @test length(read(f, 8)) == 3
+        @test position(f) == 9
     end
 
     # Test that it doesn't try to open a non-existent file
