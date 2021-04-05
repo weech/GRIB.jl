@@ -170,78 +170,85 @@ function getsize(message::Message, key::AbstractString)
     lenref[]
 end
 
-""" Get the value of a key. """
-function Base.getindex(handle::Message, key::AbstractString)
-    typ = getnativetype(handle, key)
-    len = getsize(handle, key)
-    if typ == String
-        bufr = UInt(1024)
-        bufref = Ref(bufr)
-        mesg = zeros(Cuchar, bufr)
-        err = ccall((:codes_get_string, eccodes), Cint,
-                    (Ptr{codes_handle}, Cstring, Ptr{Cuchar}, Ref{Csize_t}),
-                    handle.ptr, key, mesg, bufref)
+function getvalues(::Type{String}, handle, key)
+    bufr = UInt(1024)
+    bufref = Ref(bufr)
+    mesg = zeros(Cuchar, bufr)
+    err = ccall((:codes_get_string, eccodes), Cint,
+                (Ptr{codes_handle}, Cstring, Ptr{Cuchar}, Ref{Csize_t}),
+                handle.ptr, key, mesg, bufref)
 
-        mesgstr = rstrip(transcode(String, mesg), '\0')
+    mesgstr = rstrip(transcode(String, mesg), '\0')
+    errorcheck(err)
+    mesgstr
+end
+
+function getvalues(::Type{Float64}, handle, key)
+    len = getsize(handle, key)
+    if len == 1
+        valref = Ref(Float64(0))
+        err = ccall((:codes_get_double, eccodes), Cint,
+                    (Ptr{codes_handle}, Cstring, Ref{Cdouble}),
+                    handle.ptr, key, valref)
         errorcheck(err)
-        return mesgstr
-    elseif typ == Float64
-        if len == 1
-            valref = Ref(Float64(0))
-            err = ccall((:codes_get_double, eccodes), Cint,
-                        (Ptr{codes_handle}, Cstring, Ref{Cdouble}),
-                        handle.ptr, key, valref)
-            errorcheck(err)
-            return valref[]
-        else
-            lenref = Ref(len)
-            vals = Vector{Float64}(undef, len)
-            err = ccall((:codes_get_double_array, eccodes), Cint,
-                       (Ptr{codes_handle}, Cstring, Ref{Cdouble}, Ref{Csize_t}),
-                        handle.ptr, key, vals, lenref)
-            errorcheck(err)
-            if key == "values" && handle["Ni"] != (2^31 - 1)
-                ni = handle["Ni"]
-                nj = handle["Nj"]
-                columnmajor = handle["jPointsAreConsecutive"] != 0
-                if columnmajor
-                    return reshape(vals, nj, ni)
-                else
-                    return reshape(vals, ni, nj)
-                end
-            else
-                return vals
-            end
-        end
-    elseif typ == Clong
-        if len == 1
-            valref = Ref(Clong(0))
-            err = ccall((:codes_get_long, eccodes), Cint, (Ptr{codes_handle}, Cstring, Ref{Clong}),
-                        handle.ptr, key, valref)
-            errorcheck(err)
-            return valref[]
-        else
-            lenref = Ref(len)
-            vals = Vector{Clong}(undef, len)
-            err = ccall((:codes_get_long_array, eccodes), Cint,
-                       (Ptr{codes_handle}, Cstring, Ref{Clong}, Ref{Csize_t}),
-                        handle.ptr, key, vals, lenref)
-            errorcheck(err)
-            return vals
-        end
-    elseif typ == Vector{UInt8}
-        bufr = UInt(1024)
-        bufref = Ref(bufr)
-        mesg = Vector{UInt8}(undef, bufr)
-        err = ccall((:codes_get_bytes, eccodes), Cint,
-                    (Ptr{codes_handle}, Cstring, Ptr{Cuchar}, Ref{Csize_t}),
-                    handle.ptr, key, mesg, bufref)
-        errorcheck(err)
-        return mesg[1:bufref[]]
+        valref[]
     else
-        throw(ErrorException("Could not get key: unsupported type"))
+        lenref = Ref(len)
+        vals = Vector{Float64}(undef, len)
+        err = ccall((:codes_get_double_array, eccodes), Cint,
+                   (Ptr{codes_handle}, Cstring, Ref{Cdouble}, Ref{Csize_t}),
+                    handle.ptr, key, vals, lenref)
+        errorcheck(err)
+        if key == "values" && handle["Ni"] != (2^31 - 1)
+            ni = handle["Ni"]
+            nj = handle["Nj"]
+            columnmajor = handle["jPointsAreConsecutive"] != 0
+            if columnmajor
+                reshape(vals, nj, ni)
+            else
+                reshape(vals, ni, nj)
+            end
+        else
+            vals
+        end
     end
 end
+
+function getvalues(::Type{Clong}, handle, key)
+    len = getsize(handle, key)
+    if len == 1
+        valref = Ref(Clong(0))
+        err = ccall((:codes_get_long, eccodes), Cint, (Ptr{codes_handle}, Cstring, Ref{Clong}),
+                    handle.ptr, key, valref)
+        errorcheck(err)
+        valref[]
+    else
+        lenref = Ref(len)
+        vals = Vector{Clong}(undef, len)
+        err = ccall((:codes_get_long_array, eccodes), Cint,
+                   (Ptr{codes_handle}, Cstring, Ref{Clong}, Ref{Csize_t}),
+                    handle.ptr, key, vals, lenref)
+        errorcheck(err)
+        vals
+    end
+end
+
+function getvalues(::Type{Vector{UInt8}}, handle, key)
+    bufr = UInt(1024)
+    bufref = Ref(bufr)
+    mesg = Vector{UInt8}(undef, bufr)
+    err = ccall((:codes_get_bytes, eccodes), Cint,
+                (Ptr{codes_handle}, Cstring, Ptr{Cuchar}, Ref{Csize_t}),
+                handle.ptr, key, mesg, bufref)
+    errorcheck(err)
+    mesg[1:bufref[]]
+end
+
+# Throw an error for an unspecialized type
+getvalues(typ::Type{Any}, handle, key) = throw(ErrorException("Could not get key: unsupported type $typ"))
+
+""" Get the value of a key. """
+Base.getindex(handle::Message, key::AbstractString) = getvalues(getnativetype(handle, key), handle, key)
 
 """
     setindex!(message::Message, value, key::AbstractString)
