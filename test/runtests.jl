@@ -6,8 +6,7 @@ using Statistics
 
     GribFile(joinpath(dirname(@__FILE__), "samples", "regular_latlon_surface.grib2")) do f
 
-        # Test that it only sees one message
-        @test f.nmessages == 1
+        # Test that it starts at 0
         @test position(f) == 0
 
         # Get the message
@@ -161,8 +160,8 @@ using Statistics
         @test position(f) == 2
         seek(f, 1)
         @test position(f) == 1
-        @test_throws DomainError seek(f, 5)
-        @test_throws DomainError skip(f, 5)
+        @test_throws DomainError seek(f, -1)
+        @test_throws DomainError skip(f, -15)
     end
 
     # Test that it doesn't try to open a non-existent file
@@ -173,12 +172,12 @@ using Statistics
 
     # Test multi-field
     GribFile(joinpath(dirname(@__FILE__), "samples", "isobaricsmaller.grb2")) do f
-        @test f.nmessages == 18
-        shortnames = Set{String}()
+        shortnames = AbstractString[]
         for msg in f
             push!(shortnames, msg["shortName"])
         end
         @test "v" in shortnames
+        @test length(shortnames) == 18
     end
 
     GribFile(joinpath(dirname(@__FILE__), "samples", "isobaricsmaller.grb2")) do f
@@ -196,19 +195,16 @@ using Statistics
         @test position(f) == 2
         seek(f, 1)
         @test position(f) == 1
-        @test_throws DomainError seek(f, 19)
-        seek(f, 11)
-        @test_throws DomainError skip(f, 10)
     end
 
     nomultisupport()
     GribFile(joinpath(dirname(@__FILE__), "samples", "isobaricsmaller.grb2")) do f
-        @test f.nmessages == 12
-        shortnames = Set{String}()
+        shortnames = AbstractString[]
         for msg in f
             push!(shortnames, msg["shortName"])
         end
         @test !("v" in shortnames)
+        @test length(shortnames) == 12
     end
 
     GribFile(joinpath(dirname(@__FILE__), "samples", "isobaricsmaller.grb2")) do f
@@ -226,9 +222,6 @@ using Statistics
         @test position(f) == 2
         seek(f, 1)
         @test position(f) == 1
-        @test_throws DomainError seek(f, 15)
-        seek(f, 11)
-        @test_throws DomainError skip(f, 3)
     end
 
     # Test that iterator methods are defined because Julia assumes weird defaults

@@ -13,7 +13,6 @@ mutable struct GribFile
     filename::String
     mode::String
     pos::Int
-    nmessages::Int32
 end
 
 function handle_fopen_errors(ptr, fname)
@@ -32,11 +31,8 @@ function GribFile(filename::AbstractString; mode="r")
     f = ccall(:fopen, Ptr{File}, (Cstring, Cstring), filename, mode)
     handle_fopen_errors(f, filename)
     nref = Ref(Int32(0))
-    err = ccall((:codes_count_in_file, eccodes), Cint, (Ptr{codes_context}, Ptr{File}, Ref{Cint}),
-                C_NULL, f, nref)
-    errorcheck(err)
 
-    GribFile(f, filename, mode, 0, nref[])
+    GribFile(f, filename, mode, 0)
 end
 
 """
@@ -84,9 +80,6 @@ end
 
 """ Read without allocating a return vector """
 function readnoreturn(f::GribFile, nm::Integer)
-    total = f.nmessages
-    nm = nm + f.pos > total ? total - f.pos : nm
-    nm <= 0 && return
     for i in 1:nm
         Message(f)
     end
@@ -97,16 +90,8 @@ end
 
 Read `nm` messages from `f` and return as vector. Default is 1.
 """
-function Base.read(f::GribFile, nm::Integer)
-    total = f.nmessages
-    nm = nm + f.pos > total ? total - f.pos : nm
-    nm <= 0 && return nothing
-    ret = Vector{Message}(undef, nm)
-    for i in 1:nm
-        ret[i] = Message(f)
-    end
-    ret
-end
+Base.read(f::GribFile, nm::Integer) =  collect(Iterators.take(f, nm))
+# 0.4 TODO: This should return a Vector. Fixing it will be breaking.
 Base.read(f::GribFile) = Message(f)
 
 """
@@ -119,15 +104,13 @@ Base.position(f::GribFile) = f.pos
 """
     seek(f::GribFile, n::Integer)
 
-Seek the file to the given position `n`
+Seek the file to the given position `n`. Throws a `DomainError`
+if `n` is negative.
 """
 function Base.seek(f::GribFile, n::Integer)
-    # TODO: Base happily seeks past the end and returns an 
-    #   empty array when reading beyond the end
-    if n < 0 || n > f.nmessages
-        throw(DomainError("n is out of range for file length $(f.nmessages)"))
-    end
-    if n < f.pos
+    if n < 0
+        throw(DomainError(n, "Cannot seek to before the start of the file"))
+    elseif n < f.pos
         seekstart(f)
         readnoreturn(f, n)
     elseif n > f.pos
@@ -138,13 +121,13 @@ end
 """
     skip(f::GribFile, offset::Integer)
 
-Seek the file relative to the current position
+Seek the file relative to the current position. Throws a `DomainError`
+if `offset` brings the file position to before the start of the file.
 """
 function Base.skip(f::GribFile, offset::Integer)
-    if f.pos + offset > f.nmessages
-        throw(DomainError("offset is out of range for file length $(f.nmessages)"))
-    end
-    if offset < 0
+    if f.pos + offset < 0 
+        throw(DomainError(offset, "Cannot skip to before the start of the file"))
+    elseif offset < 0
         oldpos = f.pos
         seekstart(f)
         readnoreturn(f, oldpos+offset)
