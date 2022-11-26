@@ -11,7 +11,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   tests:
-    name: Julia ${{ matrix.version }} - ubuntu-latest
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }}
     # The type of runner that the job will run on
     runs-on: ${{ matrix.os }}
     strategy:
@@ -23,6 +23,7 @@ jobs:
           - 'nightly'
         os:
           - ubuntu-latest
+          - windows-latest
         arch:
           - x64
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -34,7 +35,7 @@ jobs:
         with:
           version: ${{ matrix.version }}
           arch: ${{ matrix.arch }}
-          
+
       - uses: actions/cache@v1
         env:
           cache-name: cache-artifacts
@@ -46,7 +47,7 @@ jobs:
             ${{ runner.os }}-test-
             ${{ runner.os }}-
             - uses: julia-actions/julia-buildpkg@v1
-            
+
       - uses: julia-actions/julia-runtest@v1
       - uses: julia-actions/julia-processcoverage@v1
       - uses: codecov/codecov-action@v1
