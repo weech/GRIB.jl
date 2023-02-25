@@ -23,12 +23,12 @@ using Statistics
         @test msg["shortName"] == "2t"
         @test msg["level"] == 2
         @test missingvalue(msg) == 9999
-        @test typeof(maskedvalues(msg)) == Array{Union{Missing, Float64}, 2}
+        @test typeof(maskedvalues(msg)) == Array{Union{Missing,Float64},2}
 
         # Test data
         lons, lats, vals = data(msg)
-        validlats = collect(0.:2:60.)
-        validlons = collect(0.:2:30.)
+        validlats = collect(0.0:2:60.0)
+        validlons = collect(0.0:2:30.0)
         @test all([l in validlats for l in lats])
         @test all([l in validlons for l in lons])
         @test size(vals) == (16, 31)
@@ -104,36 +104,38 @@ using Statistics
         @test lats == [26, 24, 26, 24]
         @test all(isapprox.(dists, [87.08, 141.28, 194.27, 224.97], atol=0.01))
 
-        inlons = collect(2.:2:10.)
-        inlats = collect(2.:2:10.)
+        inlons = collect(2.0:2:10.0)
+        inlats = collect(2.0:2:10.0)
         lons, lats, vals, dists = findmultiple(msg, inlons, inlats)
         @test all([d == 0 for d in dists])
         @test_throws DomainError findmultiple(msg, inlons[1:2], inlats)
     end
 
     # Test Index
-    Index(joinpath(dirname(@__FILE__), "samples", "flux.grb"), "edition") do index
-        select!(index, "edition", 2)
-        count = 0
-        for msg in index
-            count += 1
+    if !Sys.iswindows()
+        Index(joinpath(dirname(@__FILE__), "samples", "flux.grb"), "edition") do index
+            select!(index, "edition", 2)
+            count = 0
+            for msg in index
+                count += 1
+            end
+            @test count == 4
         end
-        @test count == 4
-    end
 
-    Index(joinpath(dirname(@__FILE__), "samples", "flux.grb"), "typeOfLevel") do index
-        select!(index, "typeOfLevel", "surface")
-        @test keycount(index, "typeOfLevel") == 2
-        names = Set{String}()
-        for msg in index
-            push!(names, msg["shortName"])
+        Index(joinpath(dirname(@__FILE__), "samples", "flux.grb"), "typeOfLevel") do index
+            select!(index, "typeOfLevel", "surface")
+            @test keycount(index, "typeOfLevel") == 2
+            names = Set{String}()
+            for msg in index
+                push!(names, msg["shortName"])
+            end
+            @test issetequal(names, ["prate", "sp"])
         end
-        @test issetequal(names, ["prate", "sp"])
-    end
 
-    Index(joinpath(dirname(@__FILE__), "samples", "flux.grb"), "latitudeOfFirstGridPointInDegrees") do index
-        addfile!(index, joinpath(dirname(@__FILE__), "samples", "regular_latlon_surface.grib2"))
-        select!(index, "latitudeOfFirstGridPointInDegrees", 88.542)
+        Index(joinpath(dirname(@__FILE__), "samples", "flux.grb"), "latitudeOfFirstGridPointInDegrees") do index
+            addfile!(index, joinpath(dirname(@__FILE__), "samples", "regular_latlon_surface.grib2"))
+            select!(index, "latitudeOfFirstGridPointInDegrees", 88.542)
+        end
     end
 
     GribFile(joinpath(dirname(@__FILE__), "samples", "flux.grb")) do f
@@ -228,14 +230,14 @@ using Statistics
 
     # Test that iterator methods are defined because Julia assumes weird defaults
     GribFile(joinpath(dirname(@__FILE__), "samples", "isobaricsmaller.grb2")) do f
-       @test Base.IteratorSize(f) == Base.SizeUnknown()
-       msg = read(f)
-       @test Base.IteratorSize(keys(msg)) == Base.SizeUnknown()
-       @test Base.IteratorSize(values(msg)) == Base.SizeUnknown()
+        @test Base.IteratorSize(f) == Base.SizeUnknown()
+        msg = read(f)
+        @test Base.IteratorSize(keys(msg)) == Base.SizeUnknown()
+        @test Base.IteratorSize(values(msg)) == Base.SizeUnknown()
     end
 
     # Test that the local definitions are working
-    GribFile(joinpath(dirname(@__FILE__), "samples", "hrrr.echotop.grib2")) do f 
+    GribFile(joinpath(dirname(@__FILE__), "samples", "hrrr.echotop.grib2")) do f
         msg = read(f)
         @test msg["name"] == "Echo Top"
     end

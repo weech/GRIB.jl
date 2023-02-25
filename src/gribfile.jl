@@ -16,18 +16,18 @@ mutable struct GribFile
 end
 
 function handle_fopen_errors(ptr, fname)
-    if ptr == C_NULL 
+    if ptr == C_NULL
         # Automatically reads errno
         throw(SystemError("Failed to open $fname"))
     end
 end
 
 """
-    GribFile(filename::AbstractString, mode="r")
+    GribFile(filename::AbstractString, mode="rb")
 
 Open a grib file. `mode` is a mode as described by `Base.open`.
 """
-function GribFile(filename::AbstractString; mode="r")
+function GribFile(filename::AbstractString; mode="rb")
     f = ccall(:fopen, Ptr{File}, (Cstring, Cstring), filename, mode)
     handle_fopen_errors(f, filename)
     nref = Ref(Int32(0))
@@ -36,7 +36,7 @@ function GribFile(filename::AbstractString; mode="r")
 end
 
 """
-    GribFile(f::Function, filename::AbstractString, mode="r")
+    GribFile(f::Function, filename::AbstractString, mode="rb")
 
 Open a grib file and automatically close after exucuting `f`.
 `mode` is a mode as described by `Base.open`.
@@ -48,7 +48,7 @@ GribFile(filename) do f
 end
 ```
 """
-function GribFile(f::Function, filename::AbstractString; mode="r")
+function GribFile(f::Function, filename::AbstractString; mode="rb")
     file = GribFile(filename, mode=mode)
     try
         f(file)
@@ -90,13 +90,13 @@ end
 
 Read `nm` messages from `f` and return as vector. Default is 1.
 """
-function Base.read(f::GribFile, nm::Integer) 
+function Base.read(f::GribFile, nm::Integer)
     vec = Vector{Message}(undef, nm)
     valid_count = 0
-    for i in 1:nm 
+    for i in 1:nm
         msg = Message(f)
         if !isnothing(msg)
-            vec[i] = msg 
+            vec[i] = msg
             valid_count += 1
         end
     end
@@ -126,7 +126,7 @@ function Base.seek(f::GribFile, n::Integer)
         seekstart(f)
         readnoreturn(f, n)
     elseif n > f.pos
-        readnoreturn(f, n-f.pos)
+        readnoreturn(f, n - f.pos)
     end
 end
 
@@ -137,12 +137,12 @@ Seek the file relative to the current position. Throws a `DomainError`
 if `offset` brings the file position to before the start of the file.
 """
 function Base.skip(f::GribFile, offset::Integer)
-    if f.pos + offset < 0 
+    if f.pos + offset < 0
         throw(DomainError(offset, "Cannot skip to before the start of the file"))
     elseif offset < 0
         oldpos = f.pos
         seekstart(f)
-        readnoreturn(f, oldpos+offset)
+        readnoreturn(f, oldpos + offset)
     else
         readnoreturn(f, offset)
     end
