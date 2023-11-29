@@ -1,7 +1,7 @@
 name = "GRIB"
 uuid = "b16dfd50-4035-11e9-28d4-9dfe17e6779b"
 authors = ["Alex Weech <aweech340@gmail.com>"]
-version = "0.3.0"
+version = "0.4.0"
 
 [deps]
 eccodes_jll = "b04048ba-5ccd-5610-b3f6-85129a548705"
